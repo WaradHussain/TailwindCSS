@@ -1,0 +1,2638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tailwind CSS — Complete Guide</title>
+<style>
+  /* ─── DESIGN SYSTEM ───────────────────────────────────────── */
+  :root {
+    --bg:        #0d1117;
+    --bg2:       #161b22;
+    --bg3:       #21262d;
+    --border:    #30363d;
+    --text:      #e6edf3;
+    --muted:     #8b949e;
+    --accent:    #58a6ff;
+    --accent2:   #3fb950;
+    --accent3:   #f78166;
+    --accent4:   #d2a8ff;
+    --yellow:    #e3b341;
+    --sidebar-w: 270px;
+    --font-mono: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    display: flex;
+  }
+
+  /* ─── SIDEBAR ─────────────────────────────────────────────── */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 40px;
+  }
+
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .sidebar-header {
+    padding: 24px 20px 16px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg2);
+    z-index: 1;
+  }
+
+  .sidebar-logo {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .sidebar-tagline {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .nav-section {
+    padding: 16px 12px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .nav-link {
+    display: block;
+    padding: 6px 20px;
+    font-size: 13.5px;
+    color: var(--muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+    background: var(--bg3);
+    border-left-color: var(--accent);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(88,166,255,0.08);
+  }
+
+  /* ─── MAIN CONTENT ────────────────────────────────────────── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 60px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(88,166,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .hero-title span { color: var(--accent); }
+
+  .hero-subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pill {
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+  }
+
+  .pill-blue  { color: var(--accent);  border-color: rgba(88,166,255,0.3);  background: rgba(88,166,255,0.08); }
+  .pill-green { color: var(--accent2); border-color: rgba(63,185,80,0.3);   background: rgba(63,185,80,0.08); }
+  .pill-red   { color: var(--accent3); border-color: rgba(247,129,102,0.3); background: rgba(247,129,102,0.08); }
+  .pill-purple{ color: var(--accent4); border-color: rgba(210,168,255,0.3); background: rgba(210,168,255,0.08); }
+  .pill-yellow{ color: var(--yellow);  border-color: rgba(227,179,65,0.3);  background: rgba(227,179,65,0.08); }
+
+  /* ─── SECTIONS ────────────────────────────────────────────── */
+  .section {
+    padding: 56px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section:last-child { border-bottom: none; }
+
+  .section-number {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .section-intro {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 720px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
+
+  /* ─── TYPOGRAPHY ELEMENTS ─────────────────────────────────── */
+  h3.sub-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 32px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  h3.sub-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px; height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  p { margin-bottom: 16px; color: #c9d1d9; line-height: 1.75; }
+
+  strong { color: var(--text); font-weight: 600; }
+
+  /* ─── CODE ────────────────────────────────────────────────── */
+  code {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--accent4);
+  }
+
+  pre {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    color: var(--text);
+  }
+
+  .comment { color: #6e7681; }
+  .kw  { color: #ff7b72; }
+  .cls { color: var(--accent); }
+  .str { color: var(--accent2); }
+  .num { color: var(--yellow); }
+  .tag { color: #7ee787; }
+  .atr { color: var(--accent4); }
+  .val { color: var(--yellow); }
+
+  /* Language badge */
+  pre::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ─── CALLOUTS ────────────────────────────────────────────── */
+  .callout {
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-left: 3px solid;
+    font-size: 14.5px;
+  }
+
+  .callout-info  { background: rgba(88,166,255,0.06);  border-color: var(--accent);  color: #aac8f0; }
+  .callout-warn  { background: rgba(227,179,65,0.06);  border-color: var(--yellow);  color: #d9b86a; }
+  .callout-tip   { background: rgba(63,185,80,0.06);   border-color: var(--accent2); color: #7cc88a; }
+  .callout-key   { background: rgba(210,168,255,0.06); border-color: var(--accent4); color: #c4a8f5; }
+
+  .callout strong { color: inherit; font-weight: 700; }
+
+  /* ─── TABLES ──────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 8px; border: 1px solid var(--border); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+  thead tr { background: var(--bg3); }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: #c9d1d9;
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  td code { font-size: 12.5px; }
+
+  td.class-col { color: var(--accent4); font-family: var(--font-mono); font-size: 13px; }
+  td.css-col   { color: var(--accent2); font-family: var(--font-mono); font-size: 13px; }
+
+  /* ─── DEMO BOXES ──────────────────────────────────────────── */
+  .demo-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 16px 0;
+  }
+
+  .demo-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  /* ─── COMPARE BLOCKS ──────────────────────────────────────── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .compare-box { border-radius: 8px; overflow: hidden; }
+
+  .compare-header {
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .compare-old .compare-header { background: rgba(247,129,102,0.15); color: var(--accent3); }
+  .compare-new .compare-header { background: rgba(63,185,80,0.15);   color: var(--accent2); }
+  .compare-old pre, .compare-new pre { margin: 0; border-radius: 0 0 8px 8px; border-top: none; }
+
+  /* ─── COLOR PALETTE DISPLAY ───────────────────────────────── */
+  .color-row { display: flex; gap: 4px; margin: 12px 0; align-items: center; flex-wrap: wrap; }
+
+  .color-swatch {
+    width: 36px; height: 36px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: default;
+    position: relative;
+  }
+
+  .color-swatch:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 44px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  /* Tailwind palette swatches */
+  .c-50  { background: #eff6ff; }  .c-100 { background: #dbeafe; }
+  .c-200 { background: #bfdbfe; }  .c-300 { background: #93c5fd; }
+  .c-400 { background: #60a5fa; }  .c-500 { background: #3b82f6; }
+  .c-600 { background: #2563eb; }  .c-700 { background: #1d4ed8; }
+  .c-800 { background: #1e40af; }  .c-900 { background: #1e3a8a; }
+  .c-950 { background: #172554; }
+
+  .color-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 4px;
+    min-width: 30px;
+  }
+
+  /* ─── SPACING VISUAL ──────────────────────────────────────── */
+  .spacing-row { display: flex; align-items: flex-end; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+
+  .spacing-block {
+    background: var(--accent);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 4px;
+    min-width: 40px;
+  }
+
+  .spacing-label {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  /* ─── BREAKPOINT VISUAL ───────────────────────────────────── */
+  .bp-visual {
+    position: relative;
+    margin: 20px 0;
+    background: var(--bg3);
+    border-radius: 8px;
+    padding: 24px 20px 16px;
+    border: 1px solid var(--border);
+  }
+
+  .bp-bar {
+    height: 8px;
+    background: linear-gradient(to right, #3fb950, #58a6ff, #d2a8ff, #f78166, #e3b341);
+    border-radius: 4px;
+    margin: 12px 0 20px;
+  }
+
+  .bp-labels {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  .bp-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .bp-item .bp-name { font-weight: 700; color: var(--text); font-size: 12px; }
+  .bp-item .bp-px   { color: var(--accent); font-family: var(--font-mono); font-size: 11px; }
+  .bp-item .bp-cls  { color: var(--muted); font-size: 10px; margin-top: 2px; }
+
+  /* ─── FLEX/GRID DEMOS ─────────────────────────────────────── */
+  .flex-demo {
+    display: flex;
+    gap: 8px;
+    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 6px;
+    margin: 8px 0;
+    min-height: 60px;
+    align-items: center;
+  }
+
+  .flex-child {
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .flex-child.green  { background: var(--accent2); }
+  .flex-child.purple { background: var(--accent4); }
+  .flex-child.red    { background: var(--accent3); }
+  .flex-child.yellow { background: var(--yellow); }
+
+  /* ─── GRID DEMO ───────────────────────────────────────────── */
+  .grid-demo {
+    display: grid;
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  .grid-child {
+    background: rgba(88,166,255,0.15);
+    border: 1px solid rgba(88,166,255,0.3);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  /* ─── STATE DEMO ──────────────────────────────────────────── */
+  .state-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid rgba(88,166,255,0.4);
+    background: rgba(88,166,255,0.1);
+    color: var(--accent);
+    transition: all 0.2s;
+    margin: 4px;
+  }
+
+  .state-btn:hover { background: rgba(88,166,255,0.25); transform: translateY(-1px); }
+  .state-btn:active { transform: translateY(0); }
+
+  /* ─── DARK MODE DEMO ──────────────────────────────────────── */
+  .mode-demo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .light-card {
+    background: #ffffff;
+    color: #1f2937;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+  }
+
+  .dark-card {
+    background: #1f2937;
+    color: #f9fafb;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #374151;
+  }
+
+  .light-card h4, .dark-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .light-card p, .dark-card p {
+    font-size: 13px;
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  /* ─── CHEATSHEET ──────────────────────────────────────────── */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .cheat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .cheat-card-header {
+    background: var(--bg3);
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cheat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 14px;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+    font-size: 13px;
+  }
+
+  .cheat-row:last-child { border-bottom: none; }
+
+  .cheat-cls { font-family: var(--font-mono); color: var(--accent4); font-size: 12.5px; }
+  .cheat-val { color: var(--muted); font-size: 12px; text-align: right; }
+
+  /* ─── TOC PROGRESS ────────────────────────────────────────── */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: var(--sidebar-w); right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: 200;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--accent), var(--accent4));
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* ─── RESPONSIVE ──────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; }
+    .hero { padding: 40px 24px; }
+    .section { padding: 40px 24px; }
+    .compare { grid-template-columns: 1fr; }
+    .mode-demo { grid-template-columns: 1fr; }
+    .bp-labels { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ─── MISC ────────────────────────────────────────────────── */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+
+  .mono-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--accent4);
+  }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 16px 0;
+  }
+
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">Tailwind CSS</div>
+    <div class="sidebar-tagline">Complete Guide — A to Z</div>
+  </div>
+
+  <div class="nav-section">Fundamentals</div>
+  <a href="#why" class="nav-link">01 · Why Tailwind?</a>
+  <a href="#how" class="nav-link">02 · How It Works</a>
+  <a href="#setup" class="nav-link">03 · Setup</a>
+  <a href="#reset" class="nav-link">04 · The Base Reset</a>
+  <a href="#spacing-system" class="nav-link">05 · The Spacing System</a>
+
+  <div class="nav-section">Styling</div>
+  <a href="#typography" class="nav-link">06 · Typography</a>
+  <a href="#colors" class="nav-link">07 · Colors</a>
+  <a href="#backgrounds" class="nav-link">08 · Backgrounds & Borders</a>
+  <a href="#sizing" class="nav-link">09 · Sizing</a>
+  <a href="#spacing" class="nav-link">10 · Spacing (Margin & Padding)</a>
+
+  <div class="nav-section">Layout</div>
+  <a href="#display" class="nav-link">11 · Display & Position</a>
+  <a href="#flexbox" class="nav-link">12 · Flexbox</a>
+  <a href="#grid" class="nav-link">13 · CSS Grid</a>
+
+  <div class="nav-section">Responsive</div>
+  <a href="#responsive" class="nav-link">14 · Responsive Design</a>
+  <a href="#states" class="nav-link">15 · States (hover, focus…)</a>
+  <a href="#darkmode" class="nav-link">16 · Dark Mode</a>
+
+  <div class="nav-section">Advanced</div>
+  <a href="#arbitrary" class="nav-link">17 · Arbitrary Values</a>
+  <a href="#custom" class="nav-link">18 · Custom Styles</a>
+  <a href="#pseudo" class="nav-link">19 · Pseudo-elements</a>
+  <a href="#transitions" class="nav-link">20 · Transitions & Animations</a>
+  <a href="#tips" class="nav-link">21 · Pro Tips</a>
+  <a href="#cheatsheet" class="nav-link">22 · Cheatsheet</a>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════════════════════ -->
+<main id="main">
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <div class="hero">
+    <div class="hero-eyebrow">Complete Learning Guide</div>
+    <h1 class="hero-title">Master <span>Tailwind CSS</span><br>From Zero to Expert</h1>
+    <p class="hero-subtitle">
+      A complete, self-contained guide covering everything — from what Tailwind is and why it exists,
+      to advanced custom theming and pro workflow tips. No prerequisites except basic HTML & CSS.
+    </p>
+    <div class="hero-pills">
+      <span class="pill pill-blue">22 Chapters</span>
+      <span class="pill pill-green">Live Examples</span>
+      <span class="pill pill-purple">Reference Tables</span>
+      <span class="pill pill-red">Visual Demos</span>
+      <span class="pill pill-yellow">Full Cheatsheet</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       01 · WHY TAILWIND
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="why">
+    <div class="section-number">Chapter 01</div>
+    <h2 class="section-title">Why Tailwind? The Problem It Solves</h2>
+    <p class="section-intro">Before learning any tool, you must understand the pain it's designed to solve. Tailwind fixes a real problem with how we've been writing CSS.</p>
+
+    <h3 class="sub-title">The Old Way — Traditional CSS</h3>
+    <p>In traditional CSS, you write HTML, give elements class names, then switch to a separate CSS file to write styles for those class names. This works, but creates real problems as your project grows:</p>
+
+    <div class="compare">
+      <div class="compare-box compare-old">
+        <div class="compare-header">❌ Traditional CSS — 2 Files</div>
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- index.html --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2</span> <span class="atr">class</span>=<span class="val">"card-title"</span><span class="tag">&gt;</span>Hello<span class="tag">&lt;/h2&gt;</span>
+  <span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"card-text"</span><span class="tag">&gt;</span>World<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+<pre data-lang="CSS"><code><span class="comment">/* styles.css */</span>
+<span class="cls">.card</span> {
+  <span class="kw">padding</span>: <span class="num">16px</span>;
+  <span class="kw">border-radius</span>: <span class="num">8px</span>;
+  <span class="kw">background</span>: <span class="str">white</span>;
+}
+<span class="cls">.card-title</span> {
+  <span class="kw">font-size</span>: <span class="num">20px</span>;
+  <span class="kw">font-weight</span>: <span class="num">700</span>;
+}
+<span class="cls">.card-text</span> {
+  <span class="kw">color</span>: <span class="str">#6b7280</span>;
+}</code></pre>
+      </div>
+      <div class="compare-box compare-new">
+        <div class="compare-header">✅ Tailwind CSS — 1 File</div>
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- index.html --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"p-4 rounded-lg bg-white"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2</span> <span class="atr">class</span>=<span class="val">"text-xl font-bold"</span><span class="tag">&gt;</span>
+    Hello
+  <span class="tag">&lt;/h2&gt;</span>
+  <span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"text-gray-500"</span><span class="tag">&gt;</span>
+    World
+  <span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- No CSS file needed! --&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <h3 class="sub-title">The Problems Tailwind Fixes</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Problem (Old Way)</th><th>How Tailwind Solves It</th></tr></thead>
+        <tbody>
+          <tr><td>You spend time inventing class names (<code>.card-wrapper-inner</code>…)</td><td>No need — you use pre-made utility classes directly</td></tr>
+          <tr><td>CSS file grows to thousands of lines and gets messy</td><td>No separate CSS file — styles live in HTML</td></tr>
+          <tr><td>Changing one class might break another style (specificity conflicts)</td><td>Each class does exactly one thing — no conflicts possible</td></tr>
+          <tr><td>Unused CSS stays in your project forever, bloating file size</td><td>Tailwind's JIT compiler only generates CSS you actually use</td></tr>
+          <tr><td>Hard to build responsive designs without many media queries</td><td>Responsive prefixes built into every class: <code>md:text-xl</code></td></tr>
+          <tr><td>Dark mode requires writing duplicate CSS</td><td>One prefix does it: <code>dark:bg-gray-800</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Tailwind vs. Bootstrap vs. Plain CSS</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Plain CSS</th><th>Bootstrap</th><th>Tailwind</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Control</strong></td><td>100%</td><td>Low (pre-styled components)</td><td>100%</td></tr>
+          <tr><td><strong>Speed</strong></td><td>Slow — write everything</td><td>Fast (but limited)</td><td>Very fast</td></tr>
+          <tr><td><strong>Looks</strong></td><td>Whatever you build</td><td>"Bootstrap look" everyone recognizes</td><td>Unique — your design</td></tr>
+          <tr><td><strong>CSS file size</strong></td><td>Grows big</td><td>Large (~200KB min)</td><td>Tiny (only what you use)</td></tr>
+          <tr><td><strong>Learning curve</strong></td><td>You know it</td><td>Easy</td><td>Medium (memorize class names)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-key">
+      <strong>The core mental shift:</strong> In traditional CSS, you write styles and attach them to elements. In Tailwind, you compose styles directly on elements using small, single-purpose classes. Instead of "write a class, then style it" — you just style directly.
+    </div>
+
+    <h3 class="sub-title">Who Uses Tailwind in Production?</h3>
+    <div class="tag-row">
+      <span class="mono-tag">OpenAI</span><span class="mono-tag">Shopify</span><span class="mono-tag">GitHub</span>
+      <span class="mono-tag">Microsoft</span><span class="mono-tag">NASA</span><span class="mono-tag">Loom</span>
+      <span class="mono-tag">The Verge</span><span class="mono-tag">Netlify</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       02 · HOW IT WORKS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="how">
+    <div class="section-number">Chapter 02</div>
+    <h2 class="section-title">How Tailwind Works Under the Hood</h2>
+    <p class="section-intro">Understanding what Tailwind actually does will save you hours of confusion. It's simpler than most people think.</p>
+
+    <h3 class="sub-title">Utility Classes — One Class, One Rule</h3>
+    <p>Every Tailwind class maps to exactly one CSS rule. No more, no less.</p>
+
+<pre data-lang="Tailwind → CSS"><code><span class="comment">/* These Tailwind classes produce this CSS: */</span>
+<span class="cls">flex</span>         →  <span class="kw">display</span>: <span class="str">flex</span>;
+<span class="cls">text-center</span>  →  <span class="kw">text-align</span>: <span class="str">center</span>;
+<span class="cls">font-bold</span>    →  <span class="kw">font-weight</span>: <span class="num">700</span>;
+<span class="cls">p-4</span>          →  <span class="kw">padding</span>: <span class="num">1rem</span>;  <span class="comment">/* 16px */</span>
+<span class="cls">text-blue-500</span> → <span class="kw">color</span>: <span class="str">#3b82f6</span>;
+<span class="cls">rounded-lg</span>  →  <span class="kw">border-radius</span>: <span class="num">0.5rem</span>;
+<span class="cls">hidden</span>       →  <span class="kw">display</span>: <span class="str">none</span>;</code></pre>
+
+    <h3 class="sub-title">The JIT Compiler — Tailwind's Superpower</h3>
+    <p>JIT stands for <strong>Just-In-Time</strong>. Tailwind scans your HTML/JSX files, finds every class you've used, and generates <em>only</em> the CSS for those classes. Nothing more.</p>
+
+    <div class="demo-box">
+      <div class="demo-label">Without JIT vs With JIT</div>
+      <div class="compare">
+        <div style="background: var(--bg3); border-radius: 6px; padding: 16px;">
+          <div style="font-size: 12px; color: var(--accent3); font-weight: 700; margin-bottom: 8px;">Without JIT (old Tailwind)</div>
+          <div style="font-size: 13px; color: var(--muted);">Pre-generates <em>all possible</em> utility classes</div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--accent3); margin-top: 8px;">~10 MB CSS</div>
+          <div style="font-size: 12px; color: var(--muted);">In development</div>
+        </div>
+        <div style="background: var(--bg3); border-radius: 6px; padding: 16px;">
+          <div style="font-size: 12px; color: var(--accent2); font-weight: 700; margin-bottom: 8px;">With JIT (modern Tailwind)</div>
+          <div style="font-size: 13px; color: var(--muted);">Generates <em>only what you use</em></div>
+          <div style="font-size: 22px; font-weight: 800; color: var(--accent2); margin-top: 8px;">~5 KB CSS</div>
+          <div style="font-size: 12px; color: var(--muted);">In production</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>Important:</strong> Because JIT scans your files for class names, you must write complete class names. You cannot do string concatenation like <code>"bg-" + color</code> — Tailwind won't detect it. Always write the full class name: <code>"bg-blue-500"</code>.
+    </div>
+
+    <h3 class="sub-title">Is Tailwind Just Inline Styles?</h3>
+    <p>This is the #1 misconception. The answer is <strong>no</strong> — and here's why it matters:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>Inline Styles</th><th>Tailwind Classes</th></tr></thead>
+        <tbody>
+          <tr><td>Hover effects</td><td>❌ Impossible</td><td>✅ <code>hover:bg-blue-500</code></td></tr>
+          <tr><td>Media queries</td><td>❌ Impossible</td><td>✅ <code>md:text-xl</code></td></tr>
+          <tr><td>Dark mode</td><td>❌ Impossible</td><td>✅ <code>dark:text-white</code></td></tr>
+          <tr><td>Pseudo-elements</td><td>❌ Impossible</td><td>✅ <code>before:content-['★']</code></td></tr>
+          <tr><td>Reusability</td><td>❌ Must repeat</td><td>✅ One class, used anywhere</td></tr>
+          <tr><td>Performance</td><td>Higher specificity</td><td>Optimized, small bundle</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Tailwind's CSS Layer System</h3>
+    <p>Tailwind organizes its styles into three layers, in order of priority (lowest to highest):</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>What it contains</th><th>Priority</th></tr></thead>
+        <tbody>
+          <tr><td><code>base</code></td><td>Global resets, default element styles (removes browser defaults)</td><td>Lowest</td></tr>
+          <tr><td><code>components</code></td><td>Reusable component classes you create</td><td>Medium</td></tr>
+          <tr><td><code>utilities</code></td><td>All the individual utility classes (<code>p-4</code>, <code>flex</code>, etc.)</td><td>Highest</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>This means utility classes always win. You can add a component class <code>.btn</code> with some styles, then override any of them by adding a utility class directly in your HTML — the utility will win.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       03 · SETUP
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="setup">
+    <div class="section-number">Chapter 03</div>
+    <h2 class="section-title">Setup & Installation</h2>
+    <p class="section-intro">Three ways to use Tailwind — pick the one that fits your project.</p>
+
+    <h3 class="sub-title">Option 1 — CDN (Play/Prototype, No Build Step)</h3>
+    <p>Fastest way to try Tailwind. Just add one script tag. Not for production — use this for learning and quick prototypes.</p>
+
+<pre data-lang="HTML"><code><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="comment">&lt;!-- Add this in your &lt;head&gt; --&gt;</span>
+  <span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"https://cdn.tailwindcss.com"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;h1</span> <span class="atr">class</span>=<span class="val">"text-3xl font-bold text-blue-500"</span><span class="tag">&gt;</span>
+    It works!
+  <span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+
+    <h3 class="sub-title">Option 2 — Vite + Tailwind (Modern Web Projects)</h3>
+
+<pre data-lang="Terminal"><code><span class="comment"># 1. Create Vite project</span>
+npm create vite@latest my-project
+
+<span class="comment"># 2. Install Tailwind and Vite plugin</span>
+npm install tailwindcss @tailwindcss/vite
+
+<span class="comment"># 3. In vite.config.js / vite.config.ts</span></code></pre>
+
+<pre data-lang="JS"><code><span class="kw">import</span> tailwindcss <span class="kw">from</span> <span class="str">'@tailwindcss/vite'</span>
+<span class="kw">import</span> { defineConfig } <span class="kw">from</span> <span class="str">'vite'</span>
+
+<span class="kw">export default</span> defineConfig({
+  plugins: [
+    tailwindcss(),
+  ],
+})</code></pre>
+
+<pre data-lang="CSS"><code><span class="comment">/* In your main CSS file (e.g. src/style.css) */</span>
+<span class="cls">@import</span> <span class="str">"tailwindcss"</span>;
+
+<span class="comment">/* That's it. Done. */</span></code></pre>
+
+    <h3 class="sub-title">Option 3 — Next.js / React</h3>
+
+<pre data-lang="Terminal"><code><span class="comment"># Create Next.js app — Tailwind is a setup option</span>
+npx create-next-app@latest my-app
+<span class="comment"># Select "Yes" for Tailwind CSS when prompted</span>
+
+<span class="comment"># OR add Tailwind to existing project:</span>
+npm install tailwindcss @tailwindcss/postcss postcss</code></pre>
+
+    <h3 class="sub-title">VS Code Extension (Must Have)</h3>
+    <p>Install <strong>Tailwind CSS IntelliSense</strong> from the VS Code marketplace. It gives you:</p>
+    <div class="tag-row">
+      <span class="mono-tag">Autocomplete as you type</span>
+      <span class="mono-tag">Hover to see generated CSS</span>
+      <span class="mono-tag">Color swatches</span>
+      <span class="mono-tag">Error detection</span>
+    </div>
+
+    <div class="callout callout-tip">
+      <strong>Play Without Installing:</strong> Go to <strong>play.tailwindcss.com</strong> — an online Tailwind playground. Perfect for testing ideas and following along with this guide.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       04 · BASE RESET
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="reset">
+    <div class="section-number">Chapter 04</div>
+    <h2 class="section-title">The Base Reset — Tailwind's Starting Point</h2>
+    <p class="section-intro">Tailwind automatically removes all browser default styles. This surprises beginners but is one of its biggest advantages.</p>
+
+    <h3 class="sub-title">What Gets Removed</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>Browser Default (removed by Tailwind)</th><th>You Add Back</th></tr></thead>
+        <tbody>
+          <tr><td><code>h1</code>–<code>h6</code></td><td>Bold, large font sizes, margins</td><td><code>text-3xl font-bold mb-4</code></td></tr>
+          <tr><td><code>p</code></td><td>Bottom margin</td><td><code>mb-4</code></td></tr>
+          <tr><td><code>a</code></td><td>Blue underlined color</td><td><code>text-blue-500 underline</code></td></tr>
+          <tr><td><code>ul</code>, <code>ol</code></td><td>Bullet points, indentation</td><td><code>list-disc pl-6</code></td></tr>
+          <tr><td><code>button</code></td><td>Default button appearance</td><td>Style completely from scratch</td></tr>
+          <tr><td><code>input</code></td><td>Default input border, padding</td><td><code>border rounded px-3 py-2</code></td></tr>
+          <tr><td><code>img</code></td><td>Inline display (causes a gap at bottom)</td><td>Tailwind sets <code>display: block</code> automatically</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-info">
+      <strong>Why is this good?</strong> Browser defaults are inconsistent across Chrome, Firefox, and Safari. Tailwind removes them all so you start from a clean slate that looks the same everywhere. You're not fighting browser styles — you're building on a blank canvas.
+    </div>
+
+    <h3 class="sub-title">Re-adding Defaults in Your CSS</h3>
+    <p>If you want certain elements to always be styled (e.g., all H tags bold by default), add them to the <code>base</code> layer in your CSS:</p>
+
+<pre data-lang="CSS"><code><span class="cls">@import</span> <span class="str">"tailwindcss"</span>;
+
+<span class="cls">@layer base</span> {
+  <span class="cls">h1, h2, h3, h4, h5, h6</span> {
+    <span class="kw">font-weight</span>: <span class="num">700</span>;
+  }
+  <span class="cls">a</span> {
+    <span class="kw">color</span>: <span class="str">inherit</span>;
+    <span class="kw">text-decoration</span>: <span class="str">none</span>;
+  }
+}</code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       05 · SPACING SYSTEM
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="spacing-system">
+    <div class="section-number">Chapter 05</div>
+    <h2 class="section-title">The Spacing System — The Foundation of Everything</h2>
+    <p class="section-intro">Tailwind uses a consistent spacing scale based on <strong>1 unit = 4px (0.25rem)</strong>. Once you understand this, all margin, padding, width, height, and gap classes click instantly.</p>
+
+    <h3 class="sub-title">The Scale</h3>
+
+    <div class="spacing-row">
+      <div class="spacing-block" style="height:8px; background: rgba(88,166,255,0.3)"><span class="spacing-label" style="color:#666">0</span></div>
+      <div class="spacing-block" style="height:4px"><span class="spacing-label">px</span></div>
+      <div class="spacing-block" style="height:8px"><span class="spacing-label">0.5</span></div>
+      <div class="spacing-block" style="height:12px"><span class="spacing-label">1</span></div>
+      <div class="spacing-block" style="height:16px"><span class="spacing-label">2</span></div>
+      <div class="spacing-block" style="height:20px"><span class="spacing-label">3</span></div>
+      <div class="spacing-block" style="height:24px"><span class="spacing-label">4</span></div>
+      <div class="spacing-block" style="height:32px"><span class="spacing-label">5</span></div>
+      <div class="spacing-block" style="height:40px"><span class="spacing-label">6</span></div>
+      <div class="spacing-block" style="height:48px"><span class="spacing-label">7</span></div>
+      <div class="spacing-block" style="height:56px"><span class="spacing-label">8</span></div>
+      <div class="spacing-block" style="height:72px"><span class="spacing-label">10</span></div>
+      <div class="spacing-block" style="height:96px"><span class="spacing-label">12</span></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Scale</th><th>rem</th><th>px</th><th>Example Usage</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">0</td><td>0rem</td><td>0px</td><td>Remove spacing</td></tr>
+          <tr><td class="class-col">px</td><td>—</td><td>1px</td><td>Hair-thin border gap</td></tr>
+          <tr><td class="class-col">0.5</td><td>0.125rem</td><td>2px</td><td>Micro spacing</td></tr>
+          <tr><td class="class-col">1</td><td>0.25rem</td><td>4px</td><td>Tight spacing</td></tr>
+          <tr><td class="class-col">2</td><td>0.5rem</td><td>8px</td><td>Small padding</td></tr>
+          <tr><td class="class-col">3</td><td>0.75rem</td><td>12px</td><td>Button padding</td></tr>
+          <tr><td class="class-col">4</td><td>1rem</td><td>16px</td><td>Standard spacing unit</td></tr>
+          <tr><td class="class-col">5</td><td>1.25rem</td><td>20px</td><td>Comfortable padding</td></tr>
+          <tr><td class="class-col">6</td><td>1.5rem</td><td>24px</td><td>Section padding</td></tr>
+          <tr><td class="class-col">8</td><td>2rem</td><td>32px</td><td>Card padding</td></tr>
+          <tr><td class="class-col">10</td><td>2.5rem</td><td>40px</td><td>Generous spacing</td></tr>
+          <tr><td class="class-col">12</td><td>3rem</td><td>48px</td><td>Large section gap</td></tr>
+          <tr><td class="class-col">16</td><td>4rem</td><td>64px</td><td>Hero padding</td></tr>
+          <tr><td class="class-col">20</td><td>5rem</td><td>80px</td><td>Full-section gap</td></tr>
+          <tr><td class="class-col">24</td><td>6rem</td><td>96px</td><td>Major section break</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-key">
+      <strong>The Formula:</strong> <code>scale × 4 = pixels</code>. So <code>p-6</code> = 24px of padding. <code>mt-10</code> = 40px margin top. This applies to padding, margin, width, height, and gap — everywhere you see a number.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       06 · TYPOGRAPHY
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="typography">
+    <div class="section-number">Chapter 06</div>
+    <h2 class="section-title">Typography</h2>
+    <p class="section-intro">Everything for controlling text — size, weight, color, alignment, and more.</p>
+
+    <h3 class="sub-title">Font Size</h3>
+    <p>The prefix is <code>text-{size}</code>. Each size also sets a matching line-height automatically.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Font Size</th><th>Line Height</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">text-xs</td><td>12px (0.75rem)</td><td>1rem</td></tr>
+          <tr><td class="class-col">text-sm</td><td>14px (0.875rem)</td><td>1.25rem</td></tr>
+          <tr><td class="class-col">text-base</td><td>16px (1rem)</td><td>1.5rem</td></tr>
+          <tr><td class="class-col">text-lg</td><td>18px (1.125rem)</td><td>1.75rem</td></tr>
+          <tr><td class="class-col">text-xl</td><td>20px (1.25rem)</td><td>1.75rem</td></tr>
+          <tr><td class="class-col">text-2xl</td><td>24px (1.5rem)</td><td>2rem</td></tr>
+          <tr><td class="class-col">text-3xl</td><td>30px (1.875rem)</td><td>2.25rem</td></tr>
+          <tr><td class="class-col">text-4xl</td><td>36px (2.25rem)</td><td>2.5rem</td></tr>
+          <tr><td class="class-col">text-5xl</td><td>48px (3rem)</td><td>1</td></tr>
+          <tr><td class="class-col">text-6xl</td><td>60px (3.75rem)</td><td>1</td></tr>
+          <tr><td class="class-col">text-7xl</td><td>72px (4.5rem)</td><td>1</td></tr>
+          <tr><td class="class-col">text-8xl</td><td>96px (6rem)</td><td>1</td></tr>
+          <tr><td class="class-col">text-9xl</td><td>128px (8rem)</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Font Weight</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS Value</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">font-thin</td><td>font-weight: 100</td></tr>
+          <tr><td class="class-col">font-extralight</td><td>font-weight: 200</td></tr>
+          <tr><td class="class-col">font-light</td><td>font-weight: 300</td></tr>
+          <tr><td class="class-col">font-normal</td><td>font-weight: 400</td></tr>
+          <tr><td class="class-col">font-medium</td><td>font-weight: 500</td></tr>
+          <tr><td class="class-col">font-semibold</td><td>font-weight: 600</td></tr>
+          <tr><td class="class-col">font-bold</td><td>font-weight: 700</td></tr>
+          <tr><td class="class-col">font-extrabold</td><td>font-weight: 800</td></tr>
+          <tr><td class="class-col">font-black</td><td>font-weight: 900</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Font Family</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS Value</th><th>Look</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">font-sans</td><td>ui-sans-serif, system-ui…</td><td>Clean, modern</td></tr>
+          <tr><td class="class-col">font-serif</td><td>ui-serif, Georgia…</td><td>Traditional, editorial</td></tr>
+          <tr><td class="class-col">font-mono</td><td>ui-monospace, Courier…</td><td>Code, data</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Text Alignment & Decoration</h3>
+
+    <div class="two-col">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Class</th><th>CSS</th></tr></thead>
+          <tbody>
+            <tr><td class="class-col">text-left</td><td>text-align: left</td></tr>
+            <tr><td class="class-col">text-center</td><td>text-align: center</td></tr>
+            <tr><td class="class-col">text-right</td><td>text-align: right</td></tr>
+            <tr><td class="class-col">text-justify</td><td>text-align: justify</td></tr>
+            <tr><td class="class-col">underline</td><td>text-decoration: underline</td></tr>
+            <tr><td class="class-col">line-through</td><td>text-decoration: line-through</td></tr>
+            <tr><td class="class-col">no-underline</td><td>text-decoration: none</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Class</th><th>CSS</th></tr></thead>
+          <tbody>
+            <tr><td class="class-col">uppercase</td><td>text-transform: uppercase</td></tr>
+            <tr><td class="class-col">lowercase</td><td>text-transform: lowercase</td></tr>
+            <tr><td class="class-col">capitalize</td><td>text-transform: capitalize</td></tr>
+            <tr><td class="class-col">italic</td><td>font-style: italic</td></tr>
+            <tr><td class="class-col">not-italic</td><td>font-style: normal</td></tr>
+            <tr><td class="class-col">leading-tight</td><td>line-height: 1.25</td></tr>
+            <tr><td class="class-col">leading-relaxed</td><td>line-height: 1.625</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Letter Spacing (Tracking)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">tracking-tighter</td><td>-0.05em</td></tr>
+          <tr><td class="class-col">tracking-tight</td><td>-0.025em</td></tr>
+          <tr><td class="class-col">tracking-normal</td><td>0em</td></tr>
+          <tr><td class="class-col">tracking-wide</td><td>0.025em</td></tr>
+          <tr><td class="class-col">tracking-wider</td><td>0.05em</td></tr>
+          <tr><td class="class-col">tracking-widest</td><td>0.1em</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Typical heading --&gt;</span>
+<span class="tag">&lt;h1</span> <span class="atr">class</span>=<span class="val">"text-4xl font-bold tracking-tight text-gray-900"</span><span class="tag">&gt;</span>
+  Hello World
+<span class="tag">&lt;/h1&gt;</span>
+
+<span class="comment">&lt;!-- Body paragraph --&gt;</span>
+<span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"text-base font-normal text-gray-600 leading-relaxed"</span><span class="tag">&gt;</span>
+  Some paragraph text here.
+<span class="tag">&lt;/p&gt;</span>
+
+<span class="comment">&lt;!-- Uppercase label --&gt;</span>
+<span class="tag">&lt;span</span> <span class="atr">class</span>=<span class="val">"text-xs font-semibold uppercase tracking-widest text-blue-500"</span><span class="tag">&gt;</span>
+  Category
+<span class="tag">&lt;/span&gt;</span></code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       07 · COLORS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="colors">
+    <div class="section-number">Chapter 07</div>
+    <h2 class="section-title">Colors</h2>
+    <p class="section-intro">Tailwind ships with a carefully crafted color palette. Every color has 11 shades from 50 (lightest) to 950 (darkest).</p>
+
+    <h3 class="sub-title">How Color Classes Work</h3>
+    <p>The pattern is: <code>{property}-{color}-{shade}</code></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Prefix</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Text color</td><td><code>text-</code></td><td><code>text-blue-500</code></td></tr>
+          <tr><td>Background color</td><td><code>bg-</code></td><td><code>bg-green-100</code></td></tr>
+          <tr><td>Border color</td><td><code>border-</code></td><td><code>border-red-400</code></td></tr>
+          <tr><td>Ring (outline) color</td><td><code>ring-</code></td><td><code>ring-purple-300</code></td></tr>
+          <tr><td>Placeholder text</td><td><code>placeholder-</code></td><td><code>placeholder-gray-400</code></td></tr>
+          <tr><td>Caret color</td><td><code>caret-</code></td><td><code>caret-blue-500</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Blue — Example of the Full Shade Scale</h3>
+    <div class="color-row">
+      <div class="color-swatch c-50"  title="blue-50"></div><span class="color-name">50</span>
+      <div class="color-swatch c-100" title="blue-100"></div><span class="color-name">100</span>
+      <div class="color-swatch c-200" title="blue-200"></div><span class="color-name">200</span>
+      <div class="color-swatch c-300" title="blue-300"></div><span class="color-name">300</span>
+      <div class="color-swatch c-400" title="blue-400"></div><span class="color-name">400</span>
+      <div class="color-swatch c-500" title="blue-500"></div><span class="color-name">500</span>
+      <div class="color-swatch c-600" title="blue-600"></div><span class="color-name">600</span>
+      <div class="color-swatch c-700" title="blue-700"></div><span class="color-name">700</span>
+      <div class="color-swatch c-800" title="blue-800"></div><span class="color-name">800</span>
+      <div class="color-swatch c-900" title="blue-900"></div><span class="color-name">900</span>
+      <div class="color-swatch c-950" title="blue-950"></div><span class="color-name">950</span>
+    </div>
+    <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">Lighter numbers → lighter shade. Higher numbers → darker. 500 is the base color.</div>
+
+    <h3 class="sub-title">Available Color Names</h3>
+    <div class="tag-row">
+      <span class="mono-tag">slate</span><span class="mono-tag">gray</span><span class="mono-tag">zinc</span>
+      <span class="mono-tag">neutral</span><span class="mono-tag">stone</span><span class="mono-tag">red</span>
+      <span class="mono-tag">orange</span><span class="mono-tag">amber</span><span class="mono-tag">yellow</span>
+      <span class="mono-tag">lime</span><span class="mono-tag">green</span><span class="mono-tag">emerald</span>
+      <span class="mono-tag">teal</span><span class="mono-tag">cyan</span><span class="mono-tag">sky</span>
+      <span class="mono-tag">blue</span><span class="mono-tag">indigo</span><span class="mono-tag">violet</span>
+      <span class="mono-tag">purple</span><span class="mono-tag">fuchsia</span><span class="mono-tag">pink</span>
+      <span class="mono-tag">rose</span><span class="mono-tag">white</span><span class="mono-tag">black</span>
+    </div>
+
+    <h3 class="sub-title">Color Opacity</h3>
+    <p>Add <code>/{opacity}</code> after any color to control transparency:</p>
+
+<pre data-lang="HTML"><code><span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-blue-500/20"</span><span class="tag">&gt;</span>  <span class="comment">&lt;!-- 20% opacity background --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-blue-500/50"</span><span class="tag">&gt;</span>  <span class="comment">&lt;!-- 50% opacity background --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"text-red-400/75"</span><span class="tag">&gt;</span>  <span class="comment">&lt;!-- 75% opacity text --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"border-gray-300/60"</span><span class="tag">&gt;</span> <span class="comment">&lt;!-- 60% opacity border --&gt;</span></code></pre>
+
+    <div class="callout callout-tip">
+      <strong>Rule of thumb for shades:</strong> Use <strong>50–200</strong> for backgrounds, <strong>400–600</strong> for main colors, <strong>700–900</strong> for dark text or dark mode backgrounds, <strong>500</strong> as your "brand color" reference point.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       08 · BACKGROUNDS & BORDERS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="backgrounds">
+    <div class="section-number">Chapter 08</div>
+    <h2 class="section-title">Backgrounds & Borders</h2>
+
+    <h3 class="sub-title">Backgrounds</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>What it Does</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">bg-{color}-{shade}</td><td>Background color</td></tr>
+          <tr><td class="class-col">bg-transparent</td><td>No background</td></tr>
+          <tr><td class="class-col">bg-gradient-to-r</td><td>Linear gradient: left to right</td></tr>
+          <tr><td class="class-col">bg-gradient-to-br</td><td>Gradient: top-left to bottom-right</td></tr>
+          <tr><td class="class-col">from-blue-500</td><td>Gradient start color</td></tr>
+          <tr><td class="class-col">via-purple-500</td><td>Gradient middle color (optional)</td></tr>
+          <tr><td class="class-col">to-pink-500</td><td>Gradient end color</td></tr>
+          <tr><td class="class-col">bg-cover</td><td>background-size: cover</td></tr>
+          <tr><td class="class-col">bg-center</td><td>background-position: center</td></tr>
+          <tr><td class="class-col">bg-no-repeat</td><td>background-repeat: no-repeat</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Gradient button --&gt;</span>
+<span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"bg-gradient-to-r from-blue-500 to-purple-600
+              text-white font-bold px-6 py-3 rounded-full"</span><span class="tag">&gt;</span>
+  Click Me
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="comment">&lt;!-- Background image --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-[url('/hero.jpg')] bg-cover bg-center h-64"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">Borders</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS Value</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">border</td><td>border-width: 1px</td></tr>
+          <tr><td class="class-col">border-2</td><td>border-width: 2px</td></tr>
+          <tr><td class="class-col">border-4</td><td>border-width: 4px</td></tr>
+          <tr><td class="class-col">border-t</td><td>border-top-width: 1px (only top)</td></tr>
+          <tr><td class="class-col">border-b</td><td>border-bottom-width: 1px (only bottom)</td></tr>
+          <tr><td class="class-col">border-x</td><td>border left + right</td></tr>
+          <tr><td class="class-col">border-y</td><td>border top + bottom</td></tr>
+          <tr><td class="class-col">border-gray-300</td><td>border-color: gray 300</td></tr>
+          <tr><td class="class-col">border-solid</td><td>border-style: solid</td></tr>
+          <tr><td class="class-col">border-dashed</td><td>border-style: dashed</td></tr>
+          <tr><td class="class-col">border-dotted</td><td>border-style: dotted</td></tr>
+          <tr><td class="class-col">divide-y</td><td>Borders between stacked children</td></tr>
+          <tr><td class="class-col">divide-x</td><td>Borders between side-by-side children</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Border Radius (Rounded Corners)</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Value</th><th>Look</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">rounded-none</td><td>0</td><td>Sharp corners</td></tr>
+          <tr><td class="class-col">rounded-sm</td><td>2px</td><td>Barely rounded</td></tr>
+          <tr><td class="class-col">rounded</td><td>4px</td><td>Slightly rounded</td></tr>
+          <tr><td class="class-col">rounded-md</td><td>6px</td><td>Standard</td></tr>
+          <tr><td class="class-col">rounded-lg</td><td>8px</td><td>Cards, buttons</td></tr>
+          <tr><td class="class-col">rounded-xl</td><td>12px</td><td>Modern cards</td></tr>
+          <tr><td class="class-col">rounded-2xl</td><td>16px</td><td>Large cards</td></tr>
+          <tr><td class="class-col">rounded-3xl</td><td>24px</td><td>Very rounded</td></tr>
+          <tr><td class="class-col">rounded-full</td><td>9999px</td><td>Pills, circles</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Box Shadow</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Shadow</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">shadow-none</td><td>No shadow</td></tr>
+          <tr><td class="class-col">shadow-sm</td><td>Subtle shadow</td></tr>
+          <tr><td class="class-col">shadow</td><td>Default shadow</td></tr>
+          <tr><td class="class-col">shadow-md</td><td>Medium shadow</td></tr>
+          <tr><td class="class-col">shadow-lg</td><td>Large shadow — good for cards</td></tr>
+          <tr><td class="class-col">shadow-xl</td><td>Elevated, floating feel</td></tr>
+          <tr><td class="class-col">shadow-2xl</td><td>Deep shadow</td></tr>
+          <tr><td class="class-col">shadow-inner</td><td>Inset shadow</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       09 · SIZING
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="sizing">
+    <div class="section-number">Chapter 09</div>
+    <h2 class="section-title">Sizing — Width & Height</h2>
+
+    <h3 class="sub-title">Width Classes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Value</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">w-0</td><td>0</td><td>No width</td></tr>
+          <tr><td class="class-col">w-4</td><td>1rem (16px)</td><td>Uses spacing scale</td></tr>
+          <tr><td class="class-col">w-8</td><td>2rem (32px)</td><td></td></tr>
+          <tr><td class="class-col">w-16</td><td>4rem (64px)</td><td></td></tr>
+          <tr><td class="class-col">w-32</td><td>8rem (128px)</td><td></td></tr>
+          <tr><td class="class-col">w-64</td><td>16rem (256px)</td><td></td></tr>
+          <tr><td class="class-col">w-1/2</td><td>50%</td><td>Fraction-based</td></tr>
+          <tr><td class="class-col">w-1/3</td><td>33.33%</td><td></td></tr>
+          <tr><td class="class-col">w-2/3</td><td>66.66%</td><td></td></tr>
+          <tr><td class="class-col">w-3/4</td><td>75%</td><td></td></tr>
+          <tr><td class="class-col">w-full</td><td>100%</td><td>Full parent width</td></tr>
+          <tr><td class="class-col">w-screen</td><td>100vw</td><td>Full viewport width</td></tr>
+          <tr><td class="class-col">w-auto</td><td>auto</td><td>Let content decide</td></tr>
+          <tr><td class="class-col">w-fit</td><td>fit-content</td><td>Shrink to content</td></tr>
+          <tr><td class="class-col">max-w-sm</td><td>384px</td><td>Max width (won't exceed)</td></tr>
+          <tr><td class="class-col">max-w-md</td><td>448px</td><td></td></tr>
+          <tr><td class="class-col">max-w-lg</td><td>512px</td><td></td></tr>
+          <tr><td class="class-col">max-w-xl</td><td>576px</td><td></td></tr>
+          <tr><td class="class-col">max-w-2xl</td><td>672px</td><td></td></tr>
+          <tr><td class="class-col">max-w-4xl</td><td>896px</td><td>Good for content</td></tr>
+          <tr><td class="class-col">max-w-7xl</td><td>1280px</td><td>Wide layouts</td></tr>
+          <tr><td class="class-col">max-w-full</td><td>100%</td><td></td></tr>
+          <tr><td class="class-col">min-w-0</td><td>min-width: 0</td><td>Prevents overflow in flex</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Height Classes</h3>
+    <p>Same pattern as width but with <code>h-</code> prefix. Same fraction, full, screen options apply.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">h-4</td><td>1rem (16px)</td></tr>
+          <tr><td class="class-col">h-8</td><td>2rem (32px)</td></tr>
+          <tr><td class="class-col">h-16</td><td>4rem (64px) — icon sizes</td></tr>
+          <tr><td class="class-col">h-64</td><td>16rem (256px) — image heights</td></tr>
+          <tr><td class="class-col">h-full</td><td>100%</td></tr>
+          <tr><td class="class-col">h-screen</td><td>100vh (full viewport)</td></tr>
+          <tr><td class="class-col">h-dvh</td><td>100dvh (dynamic viewport, mobile-safe)</td></tr>
+          <tr><td class="class-col">min-h-screen</td><td>min-height: 100vh</td></tr>
+          <tr><td class="class-col">max-h-64</td><td>max-height: 16rem</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-tip">
+      <strong>Pattern for centering a page wrapper:</strong> Use <code>max-w-5xl mx-auto px-4</code> on a container. This caps the width, centers it horizontally with auto margins, and adds side padding so it doesn't touch screen edges on mobile.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       10 · SPACING
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="spacing">
+    <div class="section-number">Chapter 10</div>
+    <h2 class="section-title">Spacing — Margin & Padding</h2>
+    <p class="section-intro">Margin is space outside an element (pushes other things away). Padding is space inside an element (pushes content away from edges).</p>
+
+    <div class="demo-box">
+      <div class="demo-label">Visual: Margin vs Padding</div>
+      <div style="display: inline-block; background: rgba(88,166,255,0.1); border: 2px dashed rgba(88,166,255,0.3); padding: 0; margin: 24px;">
+        <div style="background: rgba(63,185,80,0.15); border: 2px solid rgba(63,185,80,0.4); padding: 20px; font-size: 13px;">
+          <span style="color: var(--accent2);">← PADDING (inside) →</span><br>
+          <span style="color: var(--text);">Content here</span>
+        </div>
+      </div>
+      <div style="font-size: 12px; color: var(--accent); display: inline-block; vertical-align: middle; margin-left: 12px;">← MARGIN (outside, blue dashed area) →</div>
+    </div>
+
+    <h3 class="sub-title">The Full Shorthand System</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Shorthand</th><th>Sides it Applies To</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">p-4 / m-4</td><td>All 4 sides equally</td><td>padding: 1rem</td></tr>
+          <tr><td class="class-col">pt-4 / mt-4</td><td>Top only</td><td>padding-top: 1rem</td></tr>
+          <tr><td class="class-col">pb-4 / mb-4</td><td>Bottom only</td><td>padding-bottom: 1rem</td></tr>
+          <tr><td class="class-col">pl-4 / ml-4</td><td>Left only</td><td>padding-left: 1rem</td></tr>
+          <tr><td class="class-col">pr-4 / mr-4</td><td>Right only</td><td>padding-right: 1rem</td></tr>
+          <tr><td class="class-col">px-4 / mx-4</td><td>Left + Right (horizontal)</td><td>padding-left & padding-right: 1rem</td></tr>
+          <tr><td class="class-col">py-4 / my-4</td><td>Top + Bottom (vertical)</td><td>padding-top & padding-bottom: 1rem</td></tr>
+          <tr><td class="class-col">mx-auto</td><td>Left + Right = auto</td><td>Centers element horizontally</td></tr>
+          <tr><td class="class-col">-m-4</td><td>All sides, negative</td><td>Negative margin: pulls inward</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Space Between Children</h3>
+    <p>Instead of adding margin to every child, add <code>space-y-{n}</code> or <code>space-x-{n}</code> to the parent. It adds margin-bottom to all children except the last.</p>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Without space-y: must add mb to each child --&gt;</span>
+<span class="tag">&lt;div&gt;</span>
+  <span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"mb-4"</span><span class="tag">&gt;</span>First<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"mb-4"</span><span class="tag">&gt;</span>Second<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Third<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- With space-y: cleaner, same result --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"space-y-4"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;p&gt;</span>First<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Second<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Third<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <div class="callout callout-warn">
+      <strong>space-y vs gap:</strong> Use <code>space-y</code> for regular block elements stacked vertically. Use <code>gap</code> when you're using flexbox or grid — <code>gap</code> works better in those contexts.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       11 · DISPLAY & POSITION
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="display">
+    <div class="section-number">Chapter 11</div>
+    <h2 class="section-title">Display & Position</h2>
+
+    <h3 class="sub-title">Display Property</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th><th>Behavior</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">block</td><td>display: block</td><td>Full width, stacks vertically</td></tr>
+          <tr><td class="class-col">inline</td><td>display: inline</td><td>Flows with text, no width/height</td></tr>
+          <tr><td class="class-col">inline-block</td><td>display: inline-block</td><td>Flows with text, but accepts width/height/padding</td></tr>
+          <tr><td class="class-col">flex</td><td>display: flex</td><td>Flexbox container</td></tr>
+          <tr><td class="class-col">inline-flex</td><td>display: inline-flex</td><td>Inline flexbox</td></tr>
+          <tr><td class="class-col">grid</td><td>display: grid</td><td>CSS Grid container</td></tr>
+          <tr><td class="class-col">inline-grid</td><td>display: inline-grid</td><td>Inline grid</td></tr>
+          <tr><td class="class-col">hidden</td><td>display: none</td><td>Removes from layout completely</td></tr>
+          <tr><td class="class-col">invisible</td><td>visibility: hidden</td><td>Hides but keeps space</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Position Property</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th><th>Behavior</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">static</td><td>position: static</td><td>Default flow</td></tr>
+          <tr><td class="class-col">relative</td><td>position: relative</td><td>Positioned relative to normal spot. Creates stacking context.</td></tr>
+          <tr><td class="class-col">absolute</td><td>position: absolute</td><td>Positioned relative to nearest <code>relative</code> parent</td></tr>
+          <tr><td class="class-col">fixed</td><td>position: fixed</td><td>Fixed to viewport — doesn't scroll. Navbars.</td></tr>
+          <tr><td class="class-col">sticky</td><td>position: sticky</td><td>Normal until scrolled, then sticks. Section headers.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Positioning (top, right, bottom, left)</h3>
+    <p>Used with <code>absolute</code>, <code>fixed</code>, or <code>sticky</code>:</p>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Absolute positioning inside a relative parent --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"relative h-32 bg-gray-100"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="atr">class</span>=<span class="val">"absolute top-2 right-2 bg-red-500 text-white
+               text-xs px-2 py-0.5 rounded-full"</span><span class="tag">&gt;</span>
+    NEW
+  <span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Fixed navbar --&gt;</span>
+<span class="tag">&lt;nav</span> <span class="atr">class</span>=<span class="val">"fixed top-0 left-0 right-0 z-50 bg-white shadow"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/nav&gt;</span>
+
+<span class="comment">&lt;!-- Center an element absolutely (common trick) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"</span><span class="tag">&gt;</span>
+  Centered!
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">Z-Index</h3>
+    <div class="tag-row">
+      <span class="mono-tag">z-0</span><span class="mono-tag">z-10</span><span class="mono-tag">z-20</span>
+      <span class="mono-tag">z-30</span><span class="mono-tag">z-40</span><span class="mono-tag">z-50</span>
+      <span class="mono-tag">z-auto</span>
+    </div>
+
+    <h3 class="sub-title">Overflow</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">overflow-hidden</td><td>overflow: hidden — clips content, useful for rounded corners</td></tr>
+          <tr><td class="class-col">overflow-auto</td><td>Shows scrollbar only when needed</td></tr>
+          <tr><td class="class-col">overflow-scroll</td><td>Always shows scrollbar</td></tr>
+          <tr><td class="class-col">overflow-x-auto</td><td>Horizontal scroll only</td></tr>
+          <tr><td class="class-col">overflow-y-auto</td><td>Vertical scroll only</td></tr>
+          <tr><td class="class-col">truncate</td><td>Clips text with "…" on overflow</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       12 · FLEXBOX
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="flexbox">
+    <div class="section-number">Chapter 12</div>
+    <h2 class="section-title">Flexbox</h2>
+    <p class="section-intro">Flexbox is for one-dimensional layouts — arranging items in a row or column. Add <code>flex</code> to the parent, then use flex classes to control alignment and spacing.</p>
+
+    <h3 class="sub-title">The Two-Role System</h3>
+    <div class="callout callout-key">
+      <strong>Critical concept:</strong> Flex has two roles. The <strong>container</strong> (parent with <code>flex</code>) and the <strong>children</strong> (items inside). Container classes control layout direction and alignment. Children classes control how individual items grow/shrink.
+    </div>
+
+    <h3 class="sub-title">Container Classes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th><th>What it Does</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">flex</td><td>display: flex</td><td>Enables flexbox. Items line up in a row by default.</td></tr>
+          <tr><td class="class-col">flex-row</td><td>flex-direction: row</td><td>Items in a row (default)</td></tr>
+          <tr><td class="class-col">flex-col</td><td>flex-direction: column</td><td>Items in a column (stacked)</td></tr>
+          <tr><td class="class-col">flex-row-reverse</td><td>flex-direction: row-reverse</td><td>Row, but reversed</td></tr>
+          <tr><td class="class-col">flex-col-reverse</td><td>flex-direction: column-reverse</td><td>Column, but reversed</td></tr>
+          <tr><td class="class-col">flex-wrap</td><td>flex-wrap: wrap</td><td>Items wrap to next line if no space</td></tr>
+          <tr><td class="class-col">flex-nowrap</td><td>flex-wrap: nowrap</td><td>Items never wrap (default)</td></tr>
+          <tr><td class="class-col">gap-4</td><td>gap: 1rem</td><td>Space between flex items</td></tr>
+          <tr><td class="class-col">gap-x-4</td><td>column-gap: 1rem</td><td>Horizontal gap only</td></tr>
+          <tr><td class="class-col">gap-y-4</td><td>row-gap: 1rem</td><td>Vertical gap only</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Justify Content (Main Axis)</h3>
+    <p>Controls spacing/alignment along the <em>main axis</em> (horizontal when flex-row, vertical when flex-col).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS Value</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">justify-start</td><td>justify-content: flex-start</td><td>Items at start (default)</td></tr>
+          <tr><td class="class-col">justify-end</td><td>justify-content: flex-end</td><td>Items at end</td></tr>
+          <tr><td class="class-col">justify-center</td><td>justify-content: center</td><td>Items centered</td></tr>
+          <tr><td class="class-col">justify-between</td><td>justify-content: space-between</td><td>Max space between, none on edges</td></tr>
+          <tr><td class="class-col">justify-around</td><td>justify-content: space-around</td><td>Equal space around each item</td></tr>
+          <tr><td class="class-col">justify-evenly</td><td>justify-content: space-evenly</td><td>Perfectly even space everywhere</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Align Items (Cross Axis)</h3>
+    <p>Controls alignment on the <em>cross axis</em> (vertical when flex-row, horizontal when flex-col).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS Value</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">items-start</td><td>align-items: flex-start</td><td>Align to top (in row)</td></tr>
+          <tr><td class="class-col">items-center</td><td>align-items: center</td><td>Vertically centered</td></tr>
+          <tr><td class="class-col">items-end</td><td>align-items: flex-end</td><td>Align to bottom (in row)</td></tr>
+          <tr><td class="class-col">items-stretch</td><td>align-items: stretch</td><td>Stretch to fill height (default)</td></tr>
+          <tr><td class="class-col">items-baseline</td><td>align-items: baseline</td><td>Align by text baseline</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Child (Item) Classes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">flex-1</td><td>flex: 1 1 0%</td><td>Grow to fill available space</td></tr>
+          <tr><td class="class-col">flex-auto</td><td>flex: 1 1 auto</td><td>Grow based on content size</td></tr>
+          <tr><td class="class-col">flex-none</td><td>flex: none</td><td>Don't grow or shrink</td></tr>
+          <tr><td class="class-col">flex-initial</td><td>flex: 0 1 auto</td><td>Can shrink but not grow (default)</td></tr>
+          <tr><td class="class-col">grow</td><td>flex-grow: 1</td><td>Grow to fill space</td></tr>
+          <tr><td class="class-col">shrink</td><td>flex-shrink: 1</td><td>Can shrink if needed</td></tr>
+          <tr><td class="class-col">shrink-0</td><td>flex-shrink: 0</td><td>Never shrink</td></tr>
+          <tr><td class="class-col">self-center</td><td>align-self: center</td><td>Overrides parent align-items for this item</td></tr>
+          <tr><td class="class-col">order-1</td><td>order: 1</td><td>Reorder without changing HTML</td></tr>
+          <tr><td class="class-col">order-last</td><td>order: 9999</td><td>Push to end</td></tr>
+          <tr><td class="class-col">order-first</td><td>order: -9999</td><td>Pull to start</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Live Flex Demo</h3>
+    <div class="demo-box">
+      <div class="demo-label">flex justify-between items-center</div>
+      <div class="flex-demo" style="justify-content: space-between; align-items: center;">
+        <div class="flex-child">Logo</div>
+        <div style="display: flex; gap: 8px;">
+          <div class="flex-child green" style="font-size: 10px; padding: 6px 10px;">Home</div>
+          <div class="flex-child green" style="font-size: 10px; padding: 6px 10px;">About</div>
+          <div class="flex-child green" style="font-size: 10px; padding: 6px 10px;">Work</div>
+        </div>
+        <div class="flex-child purple">Contact</div>
+      </div>
+      <div class="demo-label" style="margin-top: 16px;">flex flex-col gap-3</div>
+      <div class="flex-demo" style="flex-direction: column; gap: 8px; align-items: flex-start;">
+        <div class="flex-child">Item 1</div>
+        <div class="flex-child green">Item 2</div>
+        <div class="flex-child purple">Item 3</div>
+      </div>
+    </div>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Navbar: logo left, links right --&gt;</span>
+<span class="tag">&lt;nav</span> <span class="atr">class</span>=<span class="val">"flex justify-between items-center px-6 py-4"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"font-bold text-xl"</span><span class="tag">&gt;</span>Logo<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"flex gap-6"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Home<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/nav&gt;</span>
+
+<span class="comment">&lt;!-- Perfect center (both axes) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"flex items-center justify-center h-screen"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;p&gt;</span>I am perfectly centered<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       13 · CSS GRID
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="grid">
+    <div class="section-number">Chapter 13</div>
+    <h2 class="section-title">CSS Grid</h2>
+    <p class="section-intro">Grid is for two-dimensional layouts — rows AND columns at the same time. Use grid when you want equal-sized columns, complex layouts, or when column count matters.</p>
+
+    <h3 class="sub-title">Flexbox vs Grid — When to Use Which</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Use Flexbox when…</th><th>Use Grid when…</th></tr></thead>
+        <tbody>
+          <tr><td>Items flow in one direction (nav links, button groups)</td><td>You need rows AND columns simultaneously</td></tr>
+          <tr><td>Items have different sizes and you want them to fit naturally</td><td>You want equal-width columns</td></tr>
+          <tr><td>You want content to drive the layout size</td><td>You want the layout to drive content size</td></tr>
+          <tr><td>Building: navbars, cards row, button groups, form rows</td><td>Building: page layouts, card grids, image galleries</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Grid Columns</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th><th>Creates</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">grid</td><td>display: grid</td><td>Enables grid</td></tr>
+          <tr><td class="class-col">grid-cols-1</td><td>grid-template-columns: repeat(1, minmax(0,1fr))</td><td>1 column</td></tr>
+          <tr><td class="class-col">grid-cols-2</td><td>repeat(2, minmax(0,1fr))</td><td>2 equal columns</td></tr>
+          <tr><td class="class-col">grid-cols-3</td><td>repeat(3, minmax(0,1fr))</td><td>3 equal columns</td></tr>
+          <tr><td class="class-col">grid-cols-4</td><td>repeat(4, minmax(0,1fr))</td><td>4 equal columns</td></tr>
+          <tr><td class="class-col">grid-cols-6</td><td>repeat(6, minmax(0,1fr))</td><td>6 equal columns</td></tr>
+          <tr><td class="class-col">grid-cols-12</td><td>repeat(12, minmax(0,1fr))</td><td>12-col layout system</td></tr>
+          <tr><td class="class-col">gap-4</td><td>gap: 1rem</td><td>Space between all cells</td></tr>
+          <tr><td class="class-col">gap-x-4</td><td>column-gap: 1rem</td><td>Horizontal gap only</td></tr>
+          <tr><td class="class-col">gap-y-4</td><td>row-gap: 1rem</td><td>Vertical gap only</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Spanning — Making Items Take Multiple Columns or Rows</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">col-span-1</td><td>grid-column: span 1</td><td>Normal width</td></tr>
+          <tr><td class="class-col">col-span-2</td><td>grid-column: span 2</td><td>Takes 2 columns</td></tr>
+          <tr><td class="class-col">col-span-3</td><td>grid-column: span 3</td><td>Takes 3 columns</td></tr>
+          <tr><td class="class-col">col-span-full</td><td>grid-column: 1 / -1</td><td>Takes entire row width</td></tr>
+          <tr><td class="class-col">row-span-2</td><td>grid-row: span 2</td><td>Takes 2 row heights</td></tr>
+          <tr><td class="class-col">row-span-full</td><td>grid-row: 1 / -1</td><td>Takes entire column height</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Live Grid Demo</h3>
+    <div class="demo-box">
+      <div class="demo-label">grid grid-cols-3 gap-3</div>
+      <div class="grid-demo" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="grid-child" style="grid-column: span 3;">Full Width (col-span-full)</div>
+        <div class="grid-child">Cell 1</div>
+        <div class="grid-child">Cell 2</div>
+        <div class="grid-child">Cell 3</div>
+        <div class="grid-child" style="grid-column: span 2;">Wide (col-span-2)</div>
+        <div class="grid-child">Cell 6</div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Auto-Responsive Grid (No Media Queries Needed)</h3>
+    <p>Use an arbitrary value with <code>auto-fit</code> and <code>minmax</code> to create a grid that automatically adjusts columns based on available space:</p>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Automatically fits as many columns as possible,
+     each at least 200px wide, expanding to fill space --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div&gt;</span>Card<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div&gt;</span>Card<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div&gt;</span>Card<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div&gt;</span>Card<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div&gt;</span>Card<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+<span class="comment">&lt;!-- On wide screen: 5 columns. Narrow: 2 columns. Tiny: 1 column.
+     All automatic, zero media queries. --&gt;</span></code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       14 · RESPONSIVE DESIGN
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="responsive">
+    <div class="section-number">Chapter 14</div>
+    <h2 class="section-title">Responsive Design</h2>
+    <p class="section-intro">Tailwind uses a <strong>mobile-first</strong> approach. Unprefixed classes apply to all screen sizes. Prefixed classes apply to that breakpoint and above.</p>
+
+    <h3 class="sub-title">The Breakpoints</h3>
+
+    <div class="bp-visual">
+      <div class="demo-label">Breakpoint Scale</div>
+      <div class="bp-bar"></div>
+      <div class="bp-labels">
+        <div class="bp-item">
+          <div class="bp-name">Default</div>
+          <div class="bp-px">0px+</div>
+          <div class="bp-cls">(no prefix)</div>
+        </div>
+        <div class="bp-item">
+          <div class="bp-name">sm</div>
+          <div class="bp-px">640px+</div>
+          <div class="bp-cls">sm:</div>
+        </div>
+        <div class="bp-item">
+          <div class="bp-name">md</div>
+          <div class="bp-px">768px+</div>
+          <div class="bp-cls">md:</div>
+        </div>
+        <div class="bp-item">
+          <div class="bp-name">lg</div>
+          <div class="bp-px">1024px+</div>
+          <div class="bp-cls">lg:</div>
+        </div>
+        <div class="bp-item">
+          <div class="bp-name">xl</div>
+          <div class="bp-px">1280px+</div>
+          <div class="bp-cls">xl:</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>The #1 Mobile-First Mistake:</strong> <code>sm:</code> does NOT mean "on small screens." It means "at 640px and above." To style mobile, use the unprefixed class. To change at a larger size, add the prefix.
+    </div>
+
+    <h3 class="sub-title">How to Read Responsive Classes</h3>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- This means:
+     Default (mobile): text is small
+     At md (768px+): text is large
+     At lg (1024px+): text is extra-large --&gt;</span>
+<span class="tag">&lt;h1</span> <span class="atr">class</span>=<span class="val">"text-lg md:text-2xl lg:text-4xl"</span><span class="tag">&gt;</span>
+  Responsive Heading
+<span class="tag">&lt;/h1&gt;</span>
+
+<span class="comment">&lt;!-- Grid: 1 col mobile, 2 col tablet, 3 col desktop --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Hide on mobile, show on desktop --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"hidden lg:block"</span><span class="tag">&gt;</span>Desktop only<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Show on mobile only, hide on desktop --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"block lg:hidden"</span><span class="tag">&gt;</span>Mobile only<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Max-width breakpoints (applies below the size) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"max-md:text-center"</span><span class="tag">&gt;</span>
+  Centered on mobile only (below 768px)
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">Every utility class is responsive</h3>
+    <p>Any Tailwind class can be prefixed. This applies to <em>everything</em>: colors, padding, display, font size, border, flex direction, grid columns — all of it.</p>
+
+<pre data-lang="HTML"><code><span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"
+  p-4 md:p-8 lg:p-12
+  bg-white md:bg-gray-50
+  flex-col md:flex-row
+  text-sm md:text-base
+  border-0 md:border md:border-gray-200
+"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">Custom Breakpoints (Arbitrary)</h3>
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Trigger at any specific width --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"min-[500px]:text-lg max-[900px]:bg-yellow-100"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       15 · STATES
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="states">
+    <div class="section-number">Chapter 15</div>
+    <h2 class="section-title">States — hover, focus, active, and More</h2>
+    <p class="section-intro">States are prefixes that apply a style only when a condition is true. Any class can be made conditional with a state prefix.</p>
+
+    <h3 class="sub-title">Common State Prefixes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Prefix</th><th>Trigger</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">hover:</td><td>Mouse over</td><td><code>hover:bg-blue-600</code></td></tr>
+          <tr><td class="class-col">focus:</td><td>Element is focused (keyboard/click)</td><td><code>focus:ring-2 focus:ring-blue-500</code></td></tr>
+          <tr><td class="class-col">active:</td><td>Mouse is clicking down</td><td><code>active:scale-95</code></td></tr>
+          <tr><td class="class-col">disabled:</td><td>Element has disabled attribute</td><td><code>disabled:opacity-50</code></td></tr>
+          <tr><td class="class-col">checked:</td><td>Checkbox/radio is checked</td><td><code>checked:bg-blue-500</code></td></tr>
+          <tr><td class="class-col">placeholder:</td><td>Input placeholder text</td><td><code>placeholder:text-gray-400</code></td></tr>
+          <tr><td class="class-col">first:</td><td>First child element</td><td><code>first:mt-0</code></td></tr>
+          <tr><td class="class-col">last:</td><td>Last child element</td><td><code>last:mb-0</code></td></tr>
+          <tr><td class="class-col">odd:</td><td>Odd-numbered children</td><td><code>odd:bg-gray-50</code></td></tr>
+          <tr><td class="class-col">even:</td><td>Even-numbered children</td><td><code>even:bg-white</code></td></tr>
+          <tr><td class="class-col">group-hover:</td><td>Hover on parent (needs <code>group</code> on parent)</td><td><code>group-hover:text-blue-500</code></td></tr>
+          <tr><td class="class-col">peer-checked:</td><td>Related sibling is checked (needs <code>peer</code>)</td><td><code>peer-checked:block</code></td></tr>
+          <tr><td class="class-col">focus-within:</td><td>Any child inside is focused</td><td><code>focus-within:ring-2</code></td></tr>
+          <tr><td class="class-col">focus-visible:</td><td>Focused via keyboard (not mouse)</td><td><code>focus-visible:ring-2</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">group — Trigger Children from Parent Hover</h3>
+    <p>Add <code>group</code> to a parent. Then children can use <code>group-hover:</code> to respond when the parent is hovered.</p>
+
+<pre data-lang="HTML"><code><span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"group p-6 bg-white rounded-xl hover:bg-blue-500 transition"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h3</span> <span class="atr">class</span>=<span class="val">"text-gray-900 group-hover:text-white transition"</span><span class="tag">&gt;</span>
+    Card Title
+  <span class="tag">&lt;/h3&gt;</span>
+  <span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"text-gray-500 group-hover:text-blue-100 transition"</span><span class="tag">&gt;</span>
+    When you hover the card, the whole card changes.
+    The text and paragraph both react.
+  <span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">Building a Complete Button</h3>
+    <div class="demo-box">
+      <button class="state-btn">Hover Me</button>
+      <button class="state-btn" style="opacity: 0.5; cursor: not-allowed;">Disabled</button>
+    </div>
+
+<pre data-lang="HTML"><code><span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"
+  bg-blue-500 text-white font-semibold
+  px-6 py-3 rounded-lg
+  hover:bg-blue-600
+  active:scale-95
+  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+  disabled:opacity-50 disabled:cursor-not-allowed
+  transition-all duration-200
+"</span><span class="tag">&gt;</span>
+  Click Me
+<span class="tag">&lt;/button&gt;</span></code></pre>
+
+    <h3 class="sub-title">Combining States</h3>
+    <p>States can be stacked: <code>sm:hover:bg-blue-600</code> means "on screens ≥640px, apply this on hover."</p>
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Only hover effect on desktop, not mobile --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"md:hover:bg-gray-100"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Dark mode + hover --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       16 · DARK MODE
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="darkmode">
+    <div class="section-number">Chapter 16</div>
+    <h2 class="section-title">Dark Mode</h2>
+    <p class="section-intro">Tailwind supports dark mode natively. Add <code>dark:</code> before any class and it only applies when dark mode is active.</p>
+
+    <h3 class="sub-title">Mode 1 — System Preference (Automatic)</h3>
+    <p>By default, Tailwind uses the user's OS/browser dark mode setting. No setup needed:</p>
+
+<pre data-lang="HTML"><code><span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-white text-gray-900 dark:bg-gray-900 dark:text-white"</span><span class="tag">&gt;</span>
+  This adapts to your system dark mode setting.
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">Mode 2 — Manual Toggle (Custom Class)</h3>
+    <p>To give users a toggle button, configure Tailwind to use a class:</p>
+
+<pre data-lang="CSS"><code><span class="comment">/* In your CSS file */</span>
+<span class="cls">@import</span> <span class="str">"tailwindcss"</span>;
+
+<span class="comment">/* Tell Tailwind: activate dark: when .dark class is on html/body */</span>
+<span class="cls">@custom-variant dark</span> (<span class="str">&.dark, .dark &</span>);</code></pre>
+
+<pre data-lang="JS"><code><span class="comment">// Toggle dark mode with JavaScript:</span>
+<span class="kw">const</span> toggle = () => {
+  document.documentElement.classList.toggle(<span class="str">'dark'</span>)
+}
+
+<span class="comment">// Or: save preference to localStorage</span>
+<span class="kw">const</span> savedTheme = localStorage.getItem(<span class="str">'theme'</span>)
+<span class="kw">if</span> (savedTheme === <span class="str">'dark'</span>) {
+  document.documentElement.classList.add(<span class="str">'dark'</span>)
+}</code></pre>
+
+    <h3 class="sub-title">Dark Mode Pattern — Light vs Dark Side-by-Side</h3>
+
+    <div class="mode-demo">
+      <div class="light-card">
+        <h4>Light Mode</h4>
+        <p>This is what the card looks like in light mode. Clean, white background.</p>
+      </div>
+      <div class="dark-card">
+        <h4>Dark Mode</h4>
+        <p>Same card in dark mode. Background flips, text flips, all from one class prefix.</p>
+      </div>
+    </div>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- One element, both modes handled: --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"
+  bg-white dark:bg-gray-800
+  text-gray-900 dark:text-gray-100
+  border border-gray-200 dark:border-gray-700
+  shadow-sm dark:shadow-none
+  p-6 rounded-xl
+"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h3</span> <span class="atr">class</span>=<span class="val">"font-bold text-gray-900 dark:text-white"</span><span class="tag">&gt;</span>Card Title<span class="tag">&lt;/h3&gt;</span>
+  <span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"text-gray-600 dark:text-gray-400"</span><span class="tag">&gt;</span>
+    Card body text
+  <span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <div class="callout callout-tip">
+      <strong>Dark mode strategy:</strong> Work on light mode first, complete it, then go through each element and add its <code>dark:</code> counterpart. Group related elements (card background + card text + card border) and handle them together.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       17 · ARBITRARY VALUES
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="arbitrary">
+    <div class="section-number">Chapter 17</div>
+    <h2 class="section-title">Arbitrary Values — When the Presets Aren't Enough</h2>
+    <p class="section-intro">Tailwind's predefined classes cover 95% of cases. For the remaining 5%, use square brackets to write any CSS value directly.</p>
+
+    <h3 class="sub-title">The Syntax</h3>
+    <p>Replace the predefined scale value with <code>[your-value]</code>:</p>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Custom sizes --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"w-[350px]"</span><span class="tag">&gt;</span>Exactly 350px wide<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"h-[70vh]"</span><span class="tag">&gt;</span>70% of viewport height<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"mt-[30px]"</span><span class="tag">&gt;</span>Exactly 30px margin top<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Custom colors (any format: hex, rgb, hsl) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-[#1a2030]"</span><span class="tag">&gt;</span>Custom hex background<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"text-[rgb(120,40,200)]"</span><span class="tag">&gt;</span>Custom RGB text<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"border-[hsl(240,50%,60%)]"</span><span class="tag">&gt;</span>Custom HSL border<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Custom font sizes --&gt;</span>
+<span class="tag">&lt;h1</span> <span class="atr">class</span>=<span class="val">"text-[clamp(2rem,5vw,4rem)]"</span><span class="tag">&gt;</span>Fluid responsive text<span class="tag">&lt;/h1&gt;</span>
+
+<span class="comment">&lt;!-- Custom grid columns --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"grid grid-cols-[1fr_2fr_1fr]"</span><span class="tag">&gt;</span>Unequal columns<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Custom top position --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"top-[117px]"</span><span class="tag">&gt;</span>Exact position<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Background image --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-[url('/images/hero.jpg')]"</span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <div class="callout callout-warn">
+      <strong>No spaces inside square brackets.</strong> In CSS you might write <code>repeat(3, 1fr)</code> with a space after the comma. In Tailwind arbitrary values, use underscores instead of spaces: <code>grid-cols-[repeat(3,_1fr)]</code> or simply no space: <code>grid-cols-[repeat(3,1fr)]</code>.
+    </div>
+
+    <h3 class="sub-title">Arbitrary Properties — Completely Custom CSS</h3>
+    <p>For CSS properties Tailwind doesn't have a class for, use the arbitrary property syntax:</p>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Any CSS property in square brackets --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"[writing-mode:vertical-lr]"</span><span class="tag">&gt;</span>Vertical text<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"[mask-type:luminance]"</span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"[scrollbar-gutter:stable]"</span><span class="tag">&gt;</span><span class="tag">&lt;/div&gt;</span></code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       18 · CUSTOM STYLES
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="custom">
+    <div class="section-number">Chapter 18</div>
+    <h2 class="section-title">Custom Styles — @theme, @layer, @apply</h2>
+    <p class="section-intro">When you need styles beyond arbitrary values — custom tokens your whole project uses — Tailwind's CSS directives are the answer.</p>
+
+    <h3 class="sub-title">@theme — Custom Design Tokens</h3>
+    <p>Register custom colors, fonts, and other design tokens so they become first-class Tailwind classes:</p>
+
+<pre data-lang="CSS"><code><span class="cls">@import</span> <span class="str">"tailwindcss"</span>;
+
+<span class="cls">@theme</span> {
+  <span class="comment">/* Custom colors — prefix with --color- */</span>
+  <span class="kw">--color-brand</span>: <span class="str">#5865f2</span>;
+  <span class="kw">--color-brand-dark</span>: <span class="str">#4752c4</span>;
+  <span class="kw">--color-surface</span>: <span class="str">#0d1117</span>;
+  <span class="kw">--color-surface-raised</span>: <span class="str">#161b22</span>;
+
+  <span class="comment">/* Custom fonts — prefix with --font- */</span>
+  <span class="kw">--font-display</span>: <span class="str">'Cabinet Grotesk', sans-serif</span>;
+  <span class="kw">--font-body</span>: <span class="str">'Inter', system-ui, sans-serif</span>;
+
+  <span class="comment">/* Custom sizes */</span>
+  <span class="kw">--spacing-xs</span>: <span class="str">0.375rem</span>;   <span class="comment">/* 6px */</span>
+  <span class="kw">--spacing-2xs</span>: <span class="str">0.25rem</span>;  <span class="comment">/* 4px */</span>
+}</code></pre>
+
+    <p>Now use them exactly like built-in Tailwind classes:</p>
+
+<pre data-lang="HTML"><code><span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-brand text-white hover:bg-brand-dark"</span><span class="tag">&gt;</span>
+  Brand Button
+<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-surface font-body text-white"</span><span class="tag">&gt;</span>
+  Page content
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">@layer — Adding Custom Base Styles</h3>
+    <p>Use <code>@layer base</code> to set styles that apply globally to HTML elements. Good for setting defaults you always want:</p>
+
+<pre data-lang="CSS"><code><span class="cls">@layer base</span> {
+  <span class="comment">/* All headings bold by default */</span>
+  <span class="cls">h1, h2, h3, h4, h5, h6</span> { <span class="kw">font-weight</span>: <span class="num">700</span>; }
+
+  <span class="comment">/* Body scrollbar style */</span>
+  <span class="cls">body</span> { <span class="kw">scrollbar-color</span>: <span class="str">#374151 #111827</span>; }
+
+  <span class="comment">/* Focus ring for accessibility */</span>
+  <span class="cls">*:focus-visible</span> {
+    <span class="kw">outline</span>: <span class="num">2px</span> <span class="str">solid #5865f2</span>;
+    <span class="kw">outline-offset</span>: <span class="num">2px</span>;
+  }
+}</code></pre>
+
+    <h3 class="sub-title">@layer components — Reusable Component Styles</h3>
+    <p>When you have a class like <code>.btn</code> that you use in many places with the same 15 utility classes, extract it to a component:</p>
+
+<pre data-lang="CSS"><code><span class="cls">@layer components</span> {
+  <span class="comment">/* Define a .btn class using Tailwind utilities */</span>
+  <span class="cls">.btn</span> {
+    <span class="cls">@apply</span> inline-flex items-center justify-center
+           px-5 py-2.5 rounded-lg font-semibold text-sm
+           transition-all duration-200 cursor-pointer
+           focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  <span class="cls">.btn-primary</span> {
+    <span class="cls">@apply</span> bg-blue-500 text-white
+           hover:bg-blue-600 focus:ring-blue-500;
+  }
+
+  <span class="cls">.btn-ghost</span> {
+    <span class="cls">@apply</span> bg-transparent text-gray-700
+           hover:bg-gray-100 focus:ring-gray-400;
+  }
+
+  <span class="cls">.card</span> {
+    <span class="cls">@apply</span> bg-white rounded-xl border border-gray-200
+           shadow-sm p-6;
+  }
+}</code></pre>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Now use clean, short class names --&gt;</span>
+<span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"btn btn-primary"</span><span class="tag">&gt;</span>Save<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"btn btn-ghost"</span><span class="tag">&gt;</span>Cancel<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"card"</span><span class="tag">&gt;</span>Card content<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Still override with utilities when needed (utilities win) --&gt;</span>
+<span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"btn btn-primary text-xs"</span><span class="tag">&gt;</span>Small Button<span class="tag">&lt;/button&gt;</span></code></pre>
+
+    <h3 class="sub-title">@utility — Custom Utility Classes</h3>
+    <p>Create your own reusable utilities when none of the built-in ones do exactly what you need:</p>
+
+<pre data-lang="CSS"><code><span class="cls">@utility flex-center</span> {
+  <span class="kw">display</span>: <span class="str">flex</span>;
+  <span class="kw">align-items</span>: <span class="str">center</span>;
+  <span class="kw">justify-content</span>: <span class="str">center</span>;
+}
+
+<span class="cls">@utility text-balance</span> {
+  <span class="kw">text-wrap</span>: <span class="str">balance</span>;
+}
+
+<span class="cls">@utility no-scrollbar</span> {
+  <span class="kw">scrollbar-width</span>: <span class="str">none</span>;
+  <span class="kw">&amp;::-webkit-scrollbar</span> { <span class="kw">display</span>: <span class="str">none</span>; }
+}</code></pre>
+
+    <div class="callout callout-info">
+      <strong>@apply warning:</strong> Don't overuse <code>@apply</code>. It makes sense for real components that are reused many times (buttons, inputs, cards). If you're doing it just to "clean up" a single div, you're defeating the purpose of Tailwind. The beauty of Tailwind is seeing styles next to structure.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       19 · PSEUDO-ELEMENTS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="pseudo">
+    <div class="section-number">Chapter 19</div>
+    <h2 class="section-title">Pseudo-elements — before, after, placeholder</h2>
+    <p class="section-intro">Pseudo-elements are virtual elements that don't exist in HTML but can be styled. Tailwind can target them with prefixes.</p>
+
+    <h3 class="sub-title">before: and after:</h3>
+    <p>Create virtual child elements before or after any element's content. You must set <code>content-['']</code> (or some content) for them to appear.</p>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Required label with asterisk added via CSS --&gt;</span>
+<span class="tag">&lt;label</span> <span class="atr">class</span>=<span class="val">"after:content-['*'] after:ml-0.5 after:text-red-500"</span><span class="tag">&gt;</span>
+  Email
+<span class="tag">&lt;/label&gt;</span>
+
+<span class="comment">&lt;!-- Decorative line under a heading --&gt;</span>
+<span class="tag">&lt;h2</span> <span class="atr">class</span>=<span class="val">"relative
+  after:absolute after:bottom-0 after:left-0
+  after:h-0.5 after:w-full after:bg-blue-500
+  after:content-['']"</span><span class="tag">&gt;</span>
+  Section Title
+<span class="tag">&lt;/h2&gt;</span>
+
+<span class="comment">&lt;!-- Arrow that appears on hover --&gt;</span>
+<span class="tag">&lt;a</span> <span class="atr">class</span>=<span class="val">"after:content-['→'] after:ml-1 after:opacity-0
+          hover:after:opacity-100 after:transition-opacity"</span><span class="tag">&gt;</span>
+  Read More
+<span class="tag">&lt;/a&gt;</span></code></pre>
+
+    <h3 class="sub-title">placeholder: — Style Input Placeholder Text</h3>
+<pre data-lang="HTML"><code><span class="tag">&lt;input</span>
+  <span class="atr">class</span>=<span class="val">"placeholder:text-gray-400 placeholder:text-sm
+         placeholder:italic bg-white border rounded px-3 py-2"</span>
+  <span class="atr">placeholder</span>=<span class="val">"Enter your email..."</span>
+<span class="tag">/&gt;</span></code></pre>
+
+    <h3 class="sub-title">selection: — Style Selected Text</h3>
+<pre data-lang="HTML"><code><span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"selection:bg-blue-500 selection:text-white"</span><span class="tag">&gt;</span>
+  Select this text to see a blue highlight.
+<span class="tag">&lt;/p&gt;</span></code></pre>
+
+    <h3 class="sub-title">file: — Style File Input Button</h3>
+<pre data-lang="HTML"><code><span class="tag">&lt;input</span>
+  <span class="atr">type</span>=<span class="val">"file"</span>
+  <span class="atr">class</span>=<span class="val">"file:mr-4 file:px-4 file:py-2 file:rounded-full
+         file:border-0 file:bg-blue-500 file:text-white
+         file:font-semibold file:cursor-pointer
+         hover:file:bg-blue-600"</span>
+<span class="tag">/&gt;</span></code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       20 · TRANSITIONS & ANIMATIONS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="transitions">
+    <div class="section-number">Chapter 20</div>
+    <h2 class="section-title">Transitions & Animations</h2>
+    <p class="section-intro">Tailwind makes adding smooth transitions and animations a matter of one or two classes.</p>
+
+    <h3 class="sub-title">Transitions</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>What Transitions</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">transition</td><td>color, background, border, box-shadow, opacity, transform</td></tr>
+          <tr><td class="class-col">transition-colors</td><td>color, background-color, border-color only</td></tr>
+          <tr><td class="class-col">transition-opacity</td><td>opacity only</td></tr>
+          <tr><td class="class-col">transition-transform</td><td>transform only</td></tr>
+          <tr><td class="class-col">transition-shadow</td><td>box-shadow only</td></tr>
+          <tr><td class="class-col">transition-all</td><td>Everything (use carefully — can cause jank)</td></tr>
+          <tr><td class="class-col">transition-none</td><td>Disable transitions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Duration</h3>
+    <div class="tag-row">
+      <span class="mono-tag">duration-75</span><span class="mono-tag">duration-100</span>
+      <span class="mono-tag">duration-150</span><span class="mono-tag">duration-200</span>
+      <span class="mono-tag">duration-300</span><span class="mono-tag">duration-500</span>
+      <span class="mono-tag">duration-700</span><span class="mono-tag">duration-1000</span>
+    </div>
+
+    <h3 class="sub-title">Easing (timing function)</h3>
+    <div class="tag-row">
+      <span class="mono-tag">ease-linear</span><span class="mono-tag">ease-in</span>
+      <span class="mono-tag">ease-out</span><span class="mono-tag">ease-in-out</span>
+    </div>
+
+    <h3 class="sub-title">Transform Utilities</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>CSS</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">scale-95</td><td>transform: scale(0.95) — slightly smaller</td></tr>
+          <tr><td class="class-col">scale-100</td><td>Normal size</td></tr>
+          <tr><td class="class-col">scale-105</td><td>Slightly larger</td></tr>
+          <tr><td class="class-col">scale-110</td><td>10% larger</td></tr>
+          <tr><td class="class-col">-translate-y-1</td><td>Move up 4px (button lift effect)</td></tr>
+          <tr><td class="class-col">translate-x-full</td><td>Slide out fully to right</td></tr>
+          <tr><td class="class-col">rotate-90</td><td>Rotate 90°</td></tr>
+          <tr><td class="class-col">rotate-180</td><td>Rotate 180° (flip arrows)</td></tr>
+          <tr><td class="class-col">skew-x-6</td><td>Skew horizontally</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Built-in Animations</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">animate-spin</td><td>Continuous rotation — loading spinners</td></tr>
+          <tr><td class="class-col">animate-ping</td><td>Ripple/pulse outward — notification badges</td></tr>
+          <tr><td class="class-col">animate-pulse</td><td>Fade in/out — skeleton loaders</td></tr>
+          <tr><td class="class-col">animate-bounce</td><td>Bouncing — scroll indicators</td></tr>
+          <tr><td class="class-col">animate-none</td><td>Remove animation</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Button with full interaction states --&gt;</span>
+<span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"bg-blue-500 text-white px-6 py-3 rounded-lg
+              hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg
+              active:translate-y-0 active:shadow-sm active:scale-95
+              transition-all duration-150 ease-in-out"</span><span class="tag">&gt;</span>
+  Animated Button
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="comment">&lt;!-- Loading spinner --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"animate-spin w-6 h-6 border-4 border-blue-500
+              border-t-transparent rounded-full"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Skeleton loader --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"animate-pulse space-y-3"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"h-4 bg-gray-200 rounded w-3/4"</span><span class="tag">&gt;&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"h-4 bg-gray-200 rounded w-full"</span><span class="tag">&gt;&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"h-4 bg-gray-200 rounded w-5/6"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Notification badge with ping --&gt;</span>
+<span class="tag">&lt;span</span> <span class="atr">class</span>=<span class="val">"relative flex h-3 w-3"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> <span class="atr">class</span>=<span class="val">"animate-ping absolute inline-flex h-full w-full
+               rounded-full bg-sky-400 opacity-75"</span><span class="tag">&gt;&lt;/span&gt;</span>
+  <span class="tag">&lt;span</span> <span class="atr">class</span>=<span class="val">"relative inline-flex rounded-full h-3 w-3 bg-sky-500"</span><span class="tag">&gt;&lt;/span&gt;</span>
+<span class="tag">&lt;/span&gt;</span></code></pre>
+
+    <div class="callout callout-info">
+      <strong>Respect reduced motion:</strong> Users can set their OS to reduce animations. Tailwind has a built-in modifier for this: <code>motion-reduce:transition-none motion-reduce:animate-none</code>. Add this to elements with heavy animations.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       21 · PRO TIPS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="tips">
+    <div class="section-number">Chapter 21</div>
+    <h2 class="section-title">Pro Tips & Patterns</h2>
+
+    <h3 class="sub-title">1. Fluid Typography (Smooth Size Scaling)</h3>
+    <p>Instead of jumping between sizes at breakpoints, use <code>clamp()</code> for smooth scaling:</p>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Jumps between sizes at breakpoints (normal) --&gt;</span>
+<span class="tag">&lt;h1</span> <span class="atr">class</span>=<span class="val">"text-2xl md:text-4xl lg:text-6xl"</span><span class="tag">&gt;</span>Heading<span class="tag">&lt;/h1&gt;</span>
+
+<span class="comment">&lt;!-- Smooth fluid scaling at every viewport width --&gt;</span>
+<span class="tag">&lt;h1</span> <span class="atr">class</span>=<span class="val">"text-[clamp(1.5rem,5vw,4rem)]"</span><span class="tag">&gt;</span>Fluid Heading<span class="tag">&lt;/h1&gt;</span></code></pre>
+
+    <h3 class="sub-title">2. Aspect Ratio (Image Containers)</h3>
+<pre data-lang="HTML"><code><span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"aspect-video bg-gray-200"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- Always 16:9 ratio, like YouTube thumbnails --&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"aspect-square bg-gray-200"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- Perfect square, great for profile pictures --&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"aspect-[4/3]"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- 4:3 ratio --&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">3. Peer — Show/Hide Based on Sibling State</h3>
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- When checkbox is checked, show the sibling div --&gt;</span>
+<span class="tag">&lt;input</span> <span class="atr">type</span>=<span class="val">"checkbox"</span> <span class="atr">class</span>=<span class="val">"peer hidden"</span> <span class="atr">id</span>=<span class="val">"toggle"</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;label</span> <span class="atr">for</span>=<span class="val">"toggle"</span> <span class="atr">class</span>=<span class="val">"cursor-pointer"</span><span class="tag">&gt;</span>Toggle<span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"hidden peer-checked:block"</span><span class="tag">&gt;</span>
+  This appears when checkbox is checked — no JavaScript!
+<span class="tag">&lt;/div&gt;</span></code></pre>
+
+    <h3 class="sub-title">4. Ring — Better Focus States</h3>
+<pre data-lang="HTML"><code><span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"focus:outline-none focus:ring-2
+              focus:ring-blue-500 focus:ring-offset-2"</span><span class="tag">&gt;</span>
+  Accessible Button
+<span class="tag">&lt;/button&gt;</span>
+
+<span class="comment">&lt;!-- ring-offset-2 creates space between element and ring --&gt;</span>
+<span class="comment">&lt;!-- ring-4 makes thicker ring --&gt;</span>
+<span class="comment">&lt;!-- ring-inset makes ring inside the element --&gt;</span></code></pre>
+
+    <h3 class="sub-title">5. Screen Reader Utilities</h3>
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Visible to screen readers, invisible to eyes --&gt;</span>
+<span class="tag">&lt;span</span> <span class="atr">class</span>=<span class="val">"sr-only"</span><span class="tag">&gt;</span>Close menu<span class="tag">&lt;/span&gt;</span>
+
+<span class="comment">&lt;!-- Only visible when focused (keyboard users) --&gt;</span>
+<span class="tag">&lt;a</span> <span class="atr">href</span>=<span class="val">"#main"</span> <span class="atr">class</span>=<span class="val">"sr-only focus:not-sr-only"</span><span class="tag">&gt;</span>Skip to content<span class="tag">&lt;/a&gt;</span></code></pre>
+
+    <h3 class="sub-title">6. Container Component Pattern</h3>
+<pre data-lang="CSS"><code><span class="comment">/* Add this once, use it everywhere */</span>
+<span class="cls">@layer components</span> {
+  <span class="cls">.container-custom</span> {
+    <span class="cls">@apply</span> max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}</code></pre>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Every page section becomes consistent --&gt;</span>
+<span class="tag">&lt;header&gt;&lt;div</span> <span class="atr">class</span>=<span class="val">"container-custom"</span><span class="tag">&gt;</span>Nav<span class="tag">&lt;/div&gt;&lt;/header&gt;</span>
+<span class="tag">&lt;main&gt;&lt;div</span> <span class="atr">class</span>=<span class="val">"container-custom"</span><span class="tag">&gt;</span>Content<span class="tag">&lt;/div&gt;&lt;/main&gt;</span>
+<span class="tag">&lt;footer&gt;&lt;div</span> <span class="atr">class</span>=<span class="val">"container-custom"</span><span class="tag">&gt;</span>Footer<span class="tag">&lt;/div&gt;&lt;/footer&gt;</span></code></pre>
+
+    <h3 class="sub-title">7. Tailwind in React/JSX</h3>
+<pre data-lang="JSX"><code><span class="comment">// className instead of class (JSX rule)</span>
+<span class="kw">export default function</span> Button({ children, variant = <span class="str">'primary'</span> }) {
+  <span class="kw">const</span> base = <span class="str">'px-6 py-3 rounded-lg font-semibold transition-all'</span>
+
+  <span class="kw">const</span> variants = {
+    primary: <span class="str">'bg-blue-500 text-white hover:bg-blue-600'</span>,
+    ghost:   <span class="str">'border border-gray-300 hover:bg-gray-50'</span>,
+    danger:  <span class="str">'bg-red-500 text-white hover:bg-red-600'</span>,
+  }
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;button</span> <span class="atr">className</span>=<span class="val">{`${base} ${variants[variant]}`</span>}<span class="tag">&gt;</span>
+      {children}
+    <span class="tag">&lt;/button&gt;</span>
+  )
+}
+
+<span class="comment">// Use it:</span>
+<span class="tag">&lt;Button</span> <span class="atr">variant</span>=<span class="val">"primary"</span><span class="tag">&gt;</span>Save<span class="tag">&lt;/Button&gt;</span>
+<span class="tag">&lt;Button</span> <span class="atr">variant</span>=<span class="val">"ghost"</span><span class="tag">&gt;</span>Cancel<span class="tag">&lt;/Button&gt;</span></code></pre>
+
+    <div class="callout callout-tip">
+      <strong>Don't memorize everything.</strong> Use Tailwind IntelliSense in VS Code. Type <code>bg-</code> and let autocomplete show you colors. Hover any class to see its CSS. After a few weeks, the most-used classes become muscle memory on their own.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       22 · CHEATSHEET
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="cheatsheet">
+    <div class="section-number">Chapter 22</div>
+    <h2 class="section-title">Quick Reference Cheatsheet</h2>
+    <p class="section-intro">The most-used classes, organized for fast lookup while you're building.</p>
+
+    <div class="cheat-grid">
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">📐 Spacing (× 4 = px)</div>
+        <div class="cheat-row"><span class="cheat-cls">p-4</span><span class="cheat-val">padding: 16px all</span></div>
+        <div class="cheat-row"><span class="cheat-cls">px-6 py-3</span><span class="cheat-val">horizontal/vertical</span></div>
+        <div class="cheat-row"><span class="cheat-cls">pt-2 pb-4</span><span class="cheat-val">top / bottom</span></div>
+        <div class="cheat-row"><span class="cheat-cls">m-4</span><span class="cheat-val">margin: 16px all</span></div>
+        <div class="cheat-row"><span class="cheat-cls">mx-auto</span><span class="cheat-val">center horizontally</span></div>
+        <div class="cheat-row"><span class="cheat-cls">space-y-4</span><span class="cheat-val">gap between children</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">📦 Sizing</div>
+        <div class="cheat-row"><span class="cheat-cls">w-full</span><span class="cheat-val">100% width</span></div>
+        <div class="cheat-row"><span class="cheat-cls">w-1/2</span><span class="cheat-val">50% width</span></div>
+        <div class="cheat-row"><span class="cheat-cls">max-w-5xl</span><span class="cheat-val">max-width: 1024px</span></div>
+        <div class="cheat-row"><span class="cheat-cls">h-screen</span><span class="cheat-val">100vh height</span></div>
+        <div class="cheat-row"><span class="cheat-cls">h-16</span><span class="cheat-val">64px fixed height</span></div>
+        <div class="cheat-row"><span class="cheat-cls">aspect-video</span><span class="cheat-val">16:9 ratio</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">🎨 Typography</div>
+        <div class="cheat-row"><span class="cheat-cls">text-xl</span><span class="cheat-val">20px font size</span></div>
+        <div class="cheat-row"><span class="cheat-cls">text-4xl</span><span class="cheat-val">36px font size</span></div>
+        <div class="cheat-row"><span class="cheat-cls">font-bold</span><span class="cheat-val">font-weight: 700</span></div>
+        <div class="cheat-row"><span class="cheat-cls">font-semibold</span><span class="cheat-val">font-weight: 600</span></div>
+        <div class="cheat-row"><span class="cheat-cls">tracking-tight</span><span class="cheat-val">letter-spacing: -0.025em</span></div>
+        <div class="cheat-row"><span class="cheat-cls">leading-relaxed</span><span class="cheat-val">line-height: 1.625</span></div>
+        <div class="cheat-row"><span class="cheat-cls">truncate</span><span class="cheat-val">text overflow ellipsis</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">🖌️ Colors</div>
+        <div class="cheat-row"><span class="cheat-cls">text-gray-900</span><span class="cheat-val">near black text</span></div>
+        <div class="cheat-row"><span class="cheat-cls">text-gray-500</span><span class="cheat-val">muted text</span></div>
+        <div class="cheat-row"><span class="cheat-cls">bg-white</span><span class="cheat-val">white background</span></div>
+        <div class="cheat-row"><span class="cheat-cls">bg-blue-500</span><span class="cheat-val">brand blue</span></div>
+        <div class="cheat-row"><span class="cheat-cls">bg-blue-500/20</span><span class="cheat-val">20% opacity</span></div>
+        <div class="cheat-row"><span class="cheat-cls">border-gray-200</span><span class="cheat-val">light border</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">🔲 Layout (Flex)</div>
+        <div class="cheat-row"><span class="cheat-cls">flex</span><span class="cheat-val">enable flexbox</span></div>
+        <div class="cheat-row"><span class="cheat-cls">flex-col</span><span class="cheat-val">column direction</span></div>
+        <div class="cheat-row"><span class="cheat-cls">items-center</span><span class="cheat-val">vertical center</span></div>
+        <div class="cheat-row"><span class="cheat-cls">justify-center</span><span class="cheat-val">horizontal center</span></div>
+        <div class="cheat-row"><span class="cheat-cls">justify-between</span><span class="cheat-val">space between</span></div>
+        <div class="cheat-row"><span class="cheat-cls">flex-1</span><span class="cheat-val">grow to fill</span></div>
+        <div class="cheat-row"><span class="cheat-cls">flex-wrap</span><span class="cheat-val">allow wrapping</span></div>
+        <div class="cheat-row"><span class="cheat-cls">gap-4</span><span class="cheat-val">16px gap</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">⬛ Layout (Grid)</div>
+        <div class="cheat-row"><span class="cheat-cls">grid</span><span class="cheat-val">enable grid</span></div>
+        <div class="cheat-row"><span class="cheat-cls">grid-cols-3</span><span class="cheat-val">3 equal columns</span></div>
+        <div class="cheat-row"><span class="cheat-cls">col-span-2</span><span class="cheat-val">item spans 2 cols</span></div>
+        <div class="cheat-row"><span class="cheat-cls">col-span-full</span><span class="cheat-val">full row width</span></div>
+        <div class="cheat-row"><span class="cheat-cls">gap-4</span><span class="cheat-val">16px gap all</span></div>
+        <div class="cheat-row"><span class="cheat-cls">gap-x-6 gap-y-4</span><span class="cheat-val">h/v gap different</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">📱 Responsive</div>
+        <div class="cheat-row"><span class="cheat-cls">(no prefix)</span><span class="cheat-val">mobile (0px+)</span></div>
+        <div class="cheat-row"><span class="cheat-cls">sm:</span><span class="cheat-val">640px and above</span></div>
+        <div class="cheat-row"><span class="cheat-cls">md:</span><span class="cheat-val">768px and above</span></div>
+        <div class="cheat-row"><span class="cheat-cls">lg:</span><span class="cheat-val">1024px and above</span></div>
+        <div class="cheat-row"><span class="cheat-cls">xl:</span><span class="cheat-val">1280px and above</span></div>
+        <div class="cheat-row"><span class="cheat-cls">hidden lg:block</span><span class="cheat-val">hide mobile, show desktop</span></div>
+        <div class="cheat-row"><span class="cheat-cls">block lg:hidden</span><span class="cheat-val">show mobile, hide desktop</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">✨ States</div>
+        <div class="cheat-row"><span class="cheat-cls">hover:bg-blue-600</span><span class="cheat-val">on mouse over</span></div>
+        <div class="cheat-row"><span class="cheat-cls">focus:ring-2</span><span class="cheat-val">on focus</span></div>
+        <div class="cheat-row"><span class="cheat-cls">active:scale-95</span><span class="cheat-val">on click down</span></div>
+        <div class="cheat-row"><span class="cheat-cls">disabled:opacity-50</span><span class="cheat-val">when disabled</span></div>
+        <div class="cheat-row"><span class="cheat-cls">dark:bg-gray-800</span><span class="cheat-val">dark mode</span></div>
+        <div class="cheat-row"><span class="cheat-cls">group-hover:text-white</span><span class="cheat-val">parent hover</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">🔘 Borders & Shadows</div>
+        <div class="cheat-row"><span class="cheat-cls">border</span><span class="cheat-val">1px border</span></div>
+        <div class="cheat-row"><span class="cheat-cls">border-gray-200</span><span class="cheat-val">border color</span></div>
+        <div class="cheat-row"><span class="cheat-cls">rounded-lg</span><span class="cheat-val">8px radius</span></div>
+        <div class="cheat-row"><span class="cheat-cls">rounded-full</span><span class="cheat-val">pill / circle</span></div>
+        <div class="cheat-row"><span class="cheat-cls">shadow-md</span><span class="cheat-val">medium shadow</span></div>
+        <div class="cheat-row"><span class="cheat-cls">shadow-lg</span><span class="cheat-val">card shadow</span></div>
+        <div class="cheat-row"><span class="cheat-cls">ring-2 ring-blue-500</span><span class="cheat-val">focus ring</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">🌀 Animations</div>
+        <div class="cheat-row"><span class="cheat-cls">transition</span><span class="cheat-val">smooth transitions</span></div>
+        <div class="cheat-row"><span class="cheat-cls">transition-colors</span><span class="cheat-val">color transitions only</span></div>
+        <div class="cheat-row"><span class="cheat-cls">duration-200</span><span class="cheat-val">200ms speed</span></div>
+        <div class="cheat-row"><span class="cheat-cls">ease-in-out</span><span class="cheat-val">smooth easing</span></div>
+        <div class="cheat-row"><span class="cheat-cls">animate-spin</span><span class="cheat-val">spinning loader</span></div>
+        <div class="cheat-row"><span class="cheat-cls">animate-pulse</span><span class="cheat-val">skeleton shimmer</span></div>
+        <div class="cheat-row"><span class="cheat-cls">scale-105 hover:scale-105</span><span class="cheat-val">scale on hover</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">🎯 Positioning</div>
+        <div class="cheat-row"><span class="cheat-cls">relative</span><span class="cheat-val">creates context</span></div>
+        <div class="cheat-row"><span class="cheat-cls">absolute top-0 right-0</span><span class="cheat-val">corner badge</span></div>
+        <div class="cheat-row"><span class="cheat-cls">fixed top-0 inset-x-0</span><span class="cheat-val">fixed navbar</span></div>
+        <div class="cheat-row"><span class="cheat-cls">sticky top-0</span><span class="cheat-val">sticky header</span></div>
+        <div class="cheat-row"><span class="cheat-cls">z-50</span><span class="cheat-val">stack order</span></div>
+        <div class="cheat-row"><span class="cheat-cls">overflow-hidden</span><span class="cheat-val">clip content</span></div>
+      </div>
+
+      <div class="cheat-card">
+        <div class="cheat-card-header">⚙️ Custom CSS</div>
+        <div class="cheat-row"><span class="cheat-cls">w-[350px]</span><span class="cheat-val">exact value</span></div>
+        <div class="cheat-row"><span class="cheat-cls">bg-[#1a2030]</span><span class="cheat-val">custom color</span></div>
+        <div class="cheat-row"><span class="cheat-cls">text-[clamp(...)]</span><span class="cheat-val">fluid text</span></div>
+        <div class="cheat-row"><span class="cheat-cls">@theme { --color-x }</span><span class="cheat-val">custom token</span></div>
+        <div class="cheat-row"><span class="cheat-cls">@layer components</span><span class="cheat-val">component class</span></div>
+        <div class="cheat-row"><span class="cheat-cls">@apply</span><span class="cheat-val">use utilities in CSS</span></div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <h3 class="sub-title">Most Common Patterns — Bookmark These</h3>
+
+<pre data-lang="HTML"><code><span class="comment">&lt;!-- Page wrapper --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Perfectly centered anything --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"flex items-center justify-center"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Responsive grid (auto columns) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"grid sm:grid-cols-2 lg:grid-cols-3 gap-6"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Card component --&gt;</span>
+<span class="tag">&lt;div</span> <span class="atr">class</span>=<span class="val">"bg-white dark:bg-gray-800 rounded-xl border border-gray-200
+              dark:border-gray-700 shadow-sm p-6 space-y-4"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Primary button --&gt;</span>
+<span class="tag">&lt;button</span> <span class="atr">class</span>=<span class="val">"bg-blue-500 hover:bg-blue-600 text-white font-semibold
+              px-6 py-3 rounded-lg transition-colors duration-200"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Input field --&gt;</span>
+<span class="tag">&lt;input</span> <span class="atr">class</span>=<span class="val">"w-full border border-gray-300 rounded-lg px-4 py-2.5
+              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+              placeholder:text-gray-400"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Badge/pill --&gt;</span>
+<span class="tag">&lt;span</span> <span class="atr">class</span>=<span class="val">"inline-flex items-center px-3 py-1 rounded-full
+              text-xs font-semibold bg-blue-100 text-blue-700"</span><span class="tag">&gt;</span>New<span class="tag">&lt;/span&gt;</span>
+
+<span class="comment">&lt;!-- Full-height page --&gt;</span>
+<span class="tag">&lt;body</span> <span class="atr">class</span>=<span class="val">"min-h-screen bg-gray-50"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Divider line --&gt;</span>
+<span class="tag">&lt;hr</span> <span class="atr">class</span>=<span class="val">"border-t border-gray-200 dark:border-gray-700 my-6"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Text truncation with tooltip --&gt;</span>
+<span class="tag">&lt;p</span> <span class="atr">class</span>=<span class="val">"truncate max-w-xs"</span><span class="tag">&gt;</span>Very long text that gets clipped...<span class="tag">&lt;/p&gt;</span></code></pre>
+
+    <div class="callout callout-tip" style="margin-top: 32px;">
+      <strong>Where to go from here:</strong> The Tailwind docs at <strong>tailwindcss.com/docs</strong> are excellent — use them as a reference, not a course. Play at <strong>play.tailwindcss.com</strong>. The best way to learn is to build something: take any design you see on the web and try to clone it with Tailwind. After one or two projects, the class names become instinct.
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // ── Progress bar ──
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (scrollTop / scrollHeight * 100) + '%';
+  });
+
+  // ── Active nav link ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
