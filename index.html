@@ -3,7 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tailwind CSS — Complete Guide</title>
+<title>Tailwind CSS — Complete Expert Guide</title>
+
+<!-- Inter + Fira Code fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS CDN (used for new chapter content + interactive demos) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+if (window.tailwind) {
+tailwind.config = {
+  darkMode: ['selector', '[data-theme="dark"]'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['Fira Code', 'Consolas', 'monospace'],
+      },
+      colors: {
+        'tw-blue': '#38BDF8',
+        'tw-sky':  '#0EA5E9',
+      }
+    }
+  }
+}
+}
+</script>
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
 <style>
 /* ═══════════════════════════════════════════════════════════
    DESIGN TOKENS — DARK & LIGHT
@@ -904,56 +935,6 @@ td.css-col   { color: var(--accent2); font-family: var(--font-mono); font-size: 
 .cheat-val { color: var(--muted); font-size: 12px; text-align: right; }
 
 /* ═══════════════════════════════════════════════════════════
-   PREV / NEXT NAVIGATION
-═══════════════════════════════════════════════════════════ */
-.chapter-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32px 60px;
-  border-top: 1px solid var(--border);
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.chapter-nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 20px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  text-decoration: none;
-  color: var(--text);
-  transition: all 0.2s;
-  min-width: 180px;
-  max-width: 280px;
-}
-
-.chapter-nav-btn:hover {
-  background: var(--bg3);
-  border-color: var(--accent);
-  box-shadow: 0 2px 12px var(--shadow);
-  transform: translateY(-1px);
-}
-
-.chapter-nav-btn.prev { flex-direction: row; }
-.chapter-nav-btn.next { flex-direction: row-reverse; margin-left: auto; text-align: right; }
-.chapter-nav-btn.disabled { opacity: 0.3; pointer-events: none; }
-
-.nav-btn-arrow {
-  font-size: 18px;
-  color: var(--accent);
-  flex-shrink: 0;
-  line-height: 1;
-}
-
-.nav-btn-text { display: flex; flex-direction: column; }
-.nav-btn-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-.nav-btn-title { font-size: 13px; font-weight: 600; color: var(--text); margin-top: 2px; }
-
-/* ═══════════════════════════════════════════════════════════
    SCROLL TO TOP
 ═══════════════════════════════════════════════════════════ */
 #scroll-top {
@@ -1132,7 +1113,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
 }
 
 /* ═══════════════════════════════════════════════════════════
-   RESPONSIVE — TABLET & MOBILE
+   TOPBAR SEARCH (mobile inline search)
 ═══════════════════════════════════════════════════════════ */
 #topbar-search-wrap {
   display: none;              /* hidden by default */
@@ -1176,6 +1157,294 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
 #topbar.searching #topbar-search-btn  { display: none; }
 #topbar.searching #theme-btn-mobile   { display: none; }
 #topbar.searching #topbar-search-wrap { display: flex; }
+
+/* ═══════════════════════════════════════════════════════════
+   TAILWIND LOGO
+═══════════════════════════════════════════════════════════ */
+.tw-logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.tw-logo svg { flex-shrink: 0; }
+.tw-logo-text {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.tw-logo-text span { color: var(--accent); }
+
+.hero-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease both;
+}
+.hero-logo svg { width: 48px; height: 48px; }
+
+/* ═══════════════════════════════════════════════════════════
+   CHAPTER ICON SYSTEM
+═══════════════════════════════════════════════════════════ */
+.nav-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: color 0.15s;
+}
+.nav-link:hover .nav-icon,
+.nav-link.active .nav-icon { color: var(--accent); }
+
+.section-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(88,166,255,0.1);
+  border: 1px solid rgba(88,166,255,0.2);
+  margin-bottom: 14px;
+}
+[data-theme="light"] .section-icon-wrap {
+  background: rgba(9,105,218,0.07);
+  border-color: rgba(9,105,218,0.15);
+}
+.section-icon-wrap svg { width: 20px; height: 20px; color: var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════
+   TIMELINE DIAGRAM (History chapter)
+═══════════════════════════════════════════════════════════ */
+.timeline {
+  position: relative;
+  margin: 28px 0;
+  padding-left: 28px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px; top: 6px; bottom: 6px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent), var(--accent4), var(--accent3));
+  border-radius: 1px;
+}
+.timeline-item {
+  position: relative;
+  padding-bottom: 26px;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-dot {
+  position: absolute;
+  left: -28px; top: 3px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--bg2);
+  border: 3px solid var(--accent);
+  z-index: 1;
+}
+.timeline-item.milestone .timeline-dot {
+  border-color: var(--accent4);
+  box-shadow: 0 0 0 4px rgba(210,168,255,0.15);
+}
+.timeline-version {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent4);
+  margin-bottom: 2px;
+}
+.timeline-date {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.timeline-desc { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════════════════════
+   PIPELINE / FLOW DIAGRAM (JIT engine, cn() pattern, etc.)
+═══════════════════════════════════════════════════════════ */
+.pipeline {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 24px 0;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+.pipeline-step {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  min-width: 150px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.pipeline-step-icon {
+  width: 28px; height: 28px;
+  margin: 0 auto 10px;
+  color: var(--accent);
+}
+.pipeline-step-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.pipeline-step-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.pipeline-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  color: var(--accent4);
+  flex-shrink: 0;
+}
+.pipeline-arrow svg { width: 18px; height: 18px; }
+
+/* ═══════════════════════════════════════════════════════════
+   LAYER STACK DIAGRAM (@layer cascade)
+═══════════════════════════════════════════════════════════ */
+.layer-stack { margin: 24px 0; }
+.layer-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+.layer-bar {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.layer-bar-base       { background: rgba(63,185,80,0.08);  border: 1px solid rgba(63,185,80,0.25); color: var(--accent2); }
+.layer-bar-components { background: rgba(227,179,65,0.08); border: 1px solid rgba(227,179,65,0.25); color: var(--yellow); }
+.layer-bar-utilities   { background: rgba(247,129,102,0.08); border: 1px solid rgba(247,129,102,0.25); color: var(--accent3); }
+.layer-priority {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+.layer-stack-arrow {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  padding: 4px 0;
+  font-family: var(--font-mono);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPARISON CARDS (architecture, version, framework comparisons)
+═══════════════════════════════════════════════════════════ */
+.arch-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+.arch-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.arch-card-header {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+.arch-card.old .arch-card-header { background: rgba(247,129,102,0.1); color: var(--accent3); }
+.arch-card.new .arch-card-header { background: rgba(63,185,80,0.1); color: var(--accent2); }
+.arch-card-body { padding: 14px 16px; }
+.arch-card-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text2);
+  padding: 6px 0;
+  line-height: 1.5;
+}
+.arch-card-row svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; }
+.arch-card.old .arch-card-row svg { color: var(--accent3); }
+.arch-card.new .arch-card-row svg { color: var(--accent2); }
+
+/* ═══════════════════════════════════════════════════════════
+   STAT CARDS (performance numbers)
+═══════════════════════════════════════════════════════════ */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 16px;
+  text-align: center;
+}
+.stat-number {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+}
+.stat-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+/* ═══════════════════════════════════════════════════════════
+   BADGE / TAG PILLS (small inline labels)
+═══════════════════════════════════════════════════════════ */
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, rgba(210,168,255,0.15), rgba(88,166,255,0.15));
+  border: 1px solid rgba(210,168,255,0.3);
+  color: var(--accent4);
+  margin-bottom: 16px;
+}
+.ai-badge svg { width: 12px; height: 12px; }
+
+/* Mistake / warning row list */
+.mistake-list { margin: 20px 0; }
+.mistake-item {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent3);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.mistake-num {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--accent3);
+  flex-shrink: 0;
+  width: 22px;
+}
+.mistake-body { flex: 1; }
+.mistake-title { font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.mistake-fix { font-size: 12.5px; color: var(--accent2); margin-top: 6px; }
+.mistake-fix strong { color: var(--accent2); }
 
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE — TABLET & MOBILE
@@ -1244,6 +1513,11 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
   .chapter-nav { padding: 24px 20px; }
 
   .compare { grid-template-columns: 1fr; }
+  .arch-compare { grid-template-columns: 1fr; }
+  .timeline { padding-left: 22px; }
+  .timeline-dot { left: -22px; width: 13px; height: 13px; }
+  .layer-row { flex-direction: column; align-items: stretch; gap: 4px; }
+  .layer-stack-arrow { transform: none; }
   .mode-demo { grid-template-columns: 1fr; }
   .two-col { grid-template-columns: 1fr; }
   .bp-labels { grid-template-columns: repeat(3, 1fr); }
@@ -1260,31 +1534,16 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
   .section { padding: 28px 16px; }
   .hero { padding: 24px 16px 28px; }
 
-  /* Chapter nav: stack vertically on small screens.
-     Fixes the "floating NEXT button" issue caused by
-     margin-left:auto on .next when .prev is disabled. */
-  .chapter-nav {
-    flex-direction: column;
-    padding: 20px 16px;
-    gap: 10px;
-  }
-  .chapter-nav-btn {
-    width: 100%;
-    max-width: 100%;
-    min-width: unset;
-    padding: 12px 14px;
-    margin-left: 0 !important; /* Kill the auto margin causing the float */
-  }
-  .chapter-nav-btn.next {
-    flex-direction: row;        /* keep arrow on right side */
-    justify-content: space-between;
-    text-align: left;
-  }
-  .nav-btn-title { font-size: 12px; }
-
   .bp-labels { grid-template-columns: repeat(2, 1fr); }
   .cheat-grid { grid-template-columns: 1fr; }
   .spacing-row { gap: 4px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .pipeline { flex-direction: column; }
+  .pipeline-arrow { min-width: unset; min-height: 28px; }
+  .pipeline-arrow svg { transform: rotate(90deg); }
+  .pipeline-step { min-width: unset; width: 100%; }
+  .mistake-item { flex-direction: column; gap: 6px; }
+  .hero-logo svg { width: 36px; height: 36px; }
 
   table { font-size: 12px; min-width: 280px; }
   th, td { padding: 9px 10px; }
@@ -1370,8 +1629,25 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
 <nav id="sidebar" aria-label="Guide navigation">
 
   <div class="sidebar-header">
-    <div class="sidebar-logo">Tailwind CSS</div>
-    <div class="sidebar-tagline">Complete Guide — A to Z</div>
+    <!-- Official Tailwind CSS mark + wordmark -->
+    <div class="tw-logo" style="margin-bottom:6px;">
+      <svg viewBox="0 0 54 33" width="32" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M27 0C19.8 0 15.3 3.6 13.5 10.8c2.7-3.6 5.85-4.95 9.45-4.05
+             2.055.51 3.525 1.995 5.16 3.645C30.735 12.96 33.885 16.2 40.5 16.2
+             c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05
+             -2.055-.51-3.525-1.995-5.16-3.645C36.765 3.24 33.615 0 27 0Z
+             M13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05
+             2.055.51 3.525 1.995 5.16 3.645C17.235 29.16 20.385 32.4 27 32.4
+             c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05
+             -2.055-.51-3.525-1.995-5.16-3.645C23.265 19.44 20.115 16.2 13.5 16.2Z"
+          fill="#38BDF8"/>
+      </svg>
+      <span style="font-size:13px;font-weight:800;color:var(--text);letter-spacing:-0.01em;">
+        Tailwind <span style="color:#38BDF8;">CSS</span>
+      </span>
+    </div>
+    <div class="sidebar-tagline">Complete Expert Guide · 29 Chapters</div>
   </div>
 
   <div class="sidebar-search">
@@ -1379,7 +1655,7 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
       <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="search" id="search-input" placeholder="Search chapters…" autocomplete="off" spellcheck="false" aria-label="Search chapters">
+      <input type="search" id="search-input" placeholder="Search 29 chapters…" autocomplete="off" spellcheck="false" aria-label="Search chapters">
       <button class="search-clear" id="search-clear" aria-label="Clear search">✕</button>
     </div>
     <div class="no-results" id="no-results">No chapters found</div>
@@ -1387,61 +1663,294 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
 
   <div id="sidebar-nav">
     <div class="nav-section" data-group="Fundamentals">Fundamentals</div>
-    <a href="#why"            class="nav-link" data-chapter="01 · Why Tailwind?">01 · Why Tailwind?</a>
-    <a href="#how"            class="nav-link" data-chapter="02 · How It Works">02 · How It Works</a>
-    <a href="#setup"          class="nav-link" data-chapter="03 · Setup">03 · Setup</a>
-    <a href="#reset"          class="nav-link" data-chapter="04 · The Base Reset">04 · The Base Reset</a>
-    <a href="#spacing-system" class="nav-link" data-chapter="05 · The Spacing System">05 · The Spacing System</a>
+    <a href="#history" class="nav-link" data-chapter="00 · History Evolution Origin Story">
+      <i data-lucide="clock" class="nav-icon"></i>00 · History &amp; Evolution
+    </a>
+    <a href="#why" class="nav-link" data-chapter="01 · Why Tailwind Problem It Solves">
+      <i data-lucide="lightbulb" class="nav-icon"></i>01 · Why Tailwind?
+    </a>
+    <a href="#how" class="nav-link" data-chapter="02 · How It Works Internal">
+      <i data-lucide="cpu" class="nav-icon"></i>02 · How It Works
+    </a>
+    <a href="#jit-engine" class="nav-link" data-chapter="03 · JIT Engine Just In Time Compiler Internals">
+      <i data-lucide="zap" class="nav-icon"></i>03 · JIT Engine Deep Dive
+    </a>
+    <a href="#setup" class="nav-link" data-chapter="04 · Setup Installation">
+      <i data-lucide="terminal" class="nav-icon"></i>04 · Setup
+    </a>
+    <a href="#reset" class="nav-link" data-chapter="05 · Base Reset Preflight">
+      <i data-lucide="refresh-cw" class="nav-icon"></i>05 · The Base Reset
+    </a>
+    <a href="#spacing-system" class="nav-link" data-chapter="06 · Spacing System Foundation Scale">
+      <i data-lucide="ruler" class="nav-icon"></i>06 · The Spacing System
+    </a>
 
     <div class="nav-section" data-group="Styling">Styling</div>
-    <a href="#typography"  class="nav-link" data-chapter="06 · Typography">06 · Typography</a>
-    <a href="#colors"      class="nav-link" data-chapter="07 · Colors">07 · Colors</a>
-    <a href="#backgrounds" class="nav-link" data-chapter="08 · Backgrounds & Borders">08 · Backgrounds &amp; Borders</a>
-    <a href="#sizing"      class="nav-link" data-chapter="09 · Sizing">09 · Sizing</a>
-    <a href="#spacing"     class="nav-link" data-chapter="10 · Spacing">10 · Spacing (Margin &amp; Padding)</a>
+    <a href="#typography" class="nav-link" data-chapter="07 · Typography Font Text">
+      <i data-lucide="type" class="nav-icon"></i>07 · Typography
+    </a>
+    <a href="#colors" class="nav-link" data-chapter="08 · Colors Palette Shades">
+      <i data-lucide="palette" class="nav-icon"></i>08 · Colors
+    </a>
+    <a href="#backgrounds" class="nav-link" data-chapter="09 · Backgrounds Borders Gradients">
+      <i data-lucide="layers" class="nav-icon"></i>09 · Backgrounds &amp; Borders
+    </a>
+    <a href="#sizing" class="nav-link" data-chapter="10 · Sizing Width Height">
+      <i data-lucide="maximize-2" class="nav-icon"></i>10 · Sizing
+    </a>
+    <a href="#spacing" class="nav-link" data-chapter="11 · Spacing Margin Padding">
+      <i data-lucide="move" class="nav-icon"></i>11 · Spacing
+    </a>
 
     <div class="nav-section" data-group="Layout">Layout</div>
-    <a href="#display"  class="nav-link" data-chapter="11 · Display & Position">11 · Display &amp; Position</a>
-    <a href="#flexbox"  class="nav-link" data-chapter="12 · Flexbox">12 · Flexbox</a>
-    <a href="#grid"     class="nav-link" data-chapter="13 · CSS Grid">13 · CSS Grid</a>
+    <a href="#display" class="nav-link" data-chapter="12 · Display Position Overflow">
+      <i data-lucide="layout" class="nav-icon"></i>12 · Display &amp; Position
+    </a>
+    <a href="#flexbox" class="nav-link" data-chapter="13 · Flexbox Flex Container">
+      <i data-lucide="git-branch" class="nav-icon"></i>13 · Flexbox
+    </a>
+    <a href="#grid" class="nav-link" data-chapter="14 · CSS Grid Columns Rows">
+      <i data-lucide="grid" class="nav-icon"></i>14 · CSS Grid
+    </a>
 
     <div class="nav-section" data-group="Responsive">Responsive</div>
-    <a href="#responsive" class="nav-link" data-chapter="14 · Responsive Design">14 · Responsive Design</a>
-    <a href="#states"     class="nav-link" data-chapter="15 · States hover focus">15 · States (hover, focus…)</a>
-    <a href="#darkmode"   class="nav-link" data-chapter="16 · Dark Mode">16 · Dark Mode</a>
+    <a href="#responsive" class="nav-link" data-chapter="15 · Responsive Design Breakpoints Mobile First">
+      <i data-lucide="smartphone" class="nav-icon"></i>15 · Responsive Design
+    </a>
+    <a href="#states" class="nav-link" data-chapter="16 · States hover focus active disabled group peer">
+      <i data-lucide="mouse-pointer-2" class="nav-icon"></i>16 · States (hover, focus…)
+    </a>
+    <a href="#darkmode" class="nav-link" data-chapter="17 · Dark Mode Theme Toggle">
+      <i data-lucide="moon" class="nav-icon"></i>17 · Dark Mode
+    </a>
 
     <div class="nav-section" data-group="Advanced">Advanced</div>
-    <a href="#arbitrary"  class="nav-link" data-chapter="17 · Arbitrary Values">17 · Arbitrary Values</a>
-    <a href="#custom"     class="nav-link" data-chapter="18 · Custom Styles theme layer apply">18 · Custom Styles</a>
-    <a href="#pseudo"     class="nav-link" data-chapter="19 · Pseudo-elements before after">19 · Pseudo-elements</a>
-    <a href="#transitions" class="nav-link" data-chapter="20 · Transitions Animations">20 · Transitions &amp; Animations</a>
-    <a href="#tips"       class="nav-link" data-chapter="21 · Pro Tips">21 · Pro Tips</a>
-    <a href="#cheatsheet" class="nav-link" data-chapter="22 · Cheatsheet Reference">22 · Cheatsheet</a>
+    <a href="#arbitrary" class="nav-link" data-chapter="18 · Arbitrary Values Custom Square Brackets">
+      <i data-lucide="brackets" class="nav-icon"></i>18 · Arbitrary Values
+    </a>
+    <a href="#custom" class="nav-link" data-chapter="19 · Custom Styles theme layer apply">
+      <i data-lucide="sliders" class="nav-icon"></i>19 · Custom Styles
+    </a>
+    <a href="#config" class="nav-link" data-chapter="20 · Configuration tailwind config js theme design tokens">
+      <i data-lucide="settings" class="nav-icon"></i>20 · Configuration
+    </a>
+    <a href="#plugins" class="nav-link" data-chapter="21 · Plugins Ecosystem cn twMerge clsx shadcn">
+      <i data-lucide="puzzle" class="nav-icon"></i>21 · Plugins &amp; Ecosystem
+    </a>
+    <a href="#pseudo" class="nav-link" data-chapter="22 · Pseudo-elements before after placeholder selection">
+      <i data-lucide="code-2" class="nav-icon"></i>22 · Pseudo-elements
+    </a>
+    <a href="#transitions" class="nav-link" data-chapter="23 · Transitions Animations keyframes">
+      <i data-lucide="play-circle" class="nav-icon"></i>23 · Transitions &amp; Animations
+    </a>
+    <a href="#performance" class="nav-link" data-chapter="24 · Performance Production Bundle Size">
+      <i data-lucide="trending-up" class="nav-icon"></i>24 · Performance &amp; Production
+    </a>
+    <a href="#ai-era" class="nav-link" data-chapter="25 · Tailwind AI Era LLM Code Generation">
+      <i data-lucide="sparkles" class="nav-icon"></i>25 · Tailwind in the AI Era
+    </a>
+    <a href="#mistakes" class="nav-link" data-chapter="26 · Common Mistakes Mental Models Best Practices">
+      <i data-lucide="alert-triangle" class="nav-icon"></i>26 · Mistakes &amp; Mental Models
+    </a>
+    <a href="#tips" class="nav-link" data-chapter="27 · Pro Tips Patterns Tricks">
+      <i data-lucide="wand-2" class="nav-icon"></i>27 · Pro Tips &amp; Patterns
+    </a>
+    <a href="#cheatsheet" class="nav-link" data-chapter="28 · Cheatsheet Quick Reference">
+      <i data-lucide="book-open" class="nav-icon"></i>28 · Cheatsheet
+    </a>
   </div>
 
 </nav>
 
 <!-- ════════════════════════════════════════════════════════════
-     MAIN CONTENT — ALL 22 CHAPTERS PRESERVED EXACTLY
+     MAIN CONTENT — 29 CHAPTERS (22 original + 7 new)
+     New chapters use Tailwind CSS utility classes directly.
 ════════════════════════════════════════════════════════════ -->
 <main id="main">
 
   <!-- ── HERO ───────────────────────────────────────────────── -->
   <div class="hero">
-    <div class="hero-eyebrow">Complete Learning Guide</div>
+    <!-- Official Tailwind CSS logo -->
+    <div class="hero-logo">
+      <svg viewBox="0 0 54 33" width="52" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+          d="M27 0C19.8 0 15.3 3.6 13.5 10.8c2.7-3.6 5.85-4.95 9.45-4.05
+             2.055.51 3.525 1.995 5.16 3.645C30.735 12.96 33.885 16.2 40.5 16.2
+             c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05
+             -2.055-.51-3.525-1.995-5.16-3.645C36.765 3.24 33.615 0 27 0Z
+             M13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05
+             2.055.51 3.525 1.995 5.16 3.645C17.235 29.16 20.385 32.4 27 32.4
+             c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05
+             -2.055-.51-3.525-1.995-5.16-3.645C23.265 19.44 20.115 16.2 13.5 16.2Z"
+          fill="#38BDF8"/>
+      </svg>
+      <div>
+        <div style="font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#38BDF8;margin-bottom:1px;">Tailwind CSS</div>
+        <div style="font-size:11px;color:var(--muted);">Complete Expert Guide</div>
+      </div>
+    </div>
+    <div class="hero-eyebrow">Utility-First · JIT Engine · Design System · AI Era</div>
     <h1 class="hero-title">Master <span>Tailwind CSS</span><br>From Zero to Expert</h1>
     <p class="hero-subtitle">
-      A complete, self-contained guide covering everything — from what Tailwind is and why it exists,
-      to advanced custom theming and pro workflow tips. No prerequisites except basic HTML & CSS.
+      A comprehensive guide built <em>with</em> Tailwind CSS — covering history, internals, JIT engine, configuration,
+      plugins, AI-era workflows, performance, and every utility class you need. No guesswork. Just mastery.
     </p>
     <div class="hero-pills">
-      <span class="pill pill-blue">22 Chapters</span>
-      <span class="pill pill-green">Live Examples</span>
+      <span class="pill pill-blue">29 Chapters</span>
+      <span class="pill pill-green">Visual Diagrams</span>
       <span class="pill pill-purple">Reference Tables</span>
-      <span class="pill pill-red">Visual Demos</span>
-      <span class="pill pill-yellow">Full Cheatsheet</span>
+      <span class="pill pill-red">Live Demos</span>
+      <span class="pill pill-yellow">AI Era Context</span>
     </div>
   </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       00 · HISTORY & EVOLUTION
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="history">
+    <div class="section-number">Chapter 00</div>
+    <div class="section-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <h2 class="section-title">History &amp; Evolution</h2>
+    <p class="section-intro">Tailwind CSS didn't start as a framework. It started as one developer's frustration with existing tools, written during a live stream in 2017. Understanding its origin tells you everything about why it works the way it does.</p>
+
+    <h3 class="sub-title">The Origin Story</h3>
+    <p><strong>Adam Wathan</strong> was building a SaaS product called Nitpick CI in 2017. He was unhappy with Bootstrap's opinionated components and kept finding himself overriding styles. He started extracting the patterns he used repeatedly into small, single-purpose CSS utility classes. During a live stream, he open-sourced the result as a PostCSS plugin.</p>
+
+    <div class="callout callout-key">
+      <strong>The founding team:</strong> Adam Wathan (creator, API design), Jonathan Reinink (early contributor), David Hemphill (early contributor), and Steve Schoger (design — he later co-authored <em>Refactoring UI</em>). Together they formed Tailwind Labs.
+    </div>
+
+    <h3 class="sub-title">Complete Version Timeline</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v0.1.0 — October 2017</div>
+        <div class="timeline-desc">Adam live-streams the creation of a PostCSS utility plugin. Ships it publicly. ~50KB of utility classes. Minimal community attention.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v1.0 — May 13, 2019</div>
+        <div class="timeline-desc">Stable public release. PurgeCSS integration arrives for production size reduction. Establishes the spacing scale, color palette, and breakpoint system that remains today.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v1.4–v1.9 — 2019–2020</div>
+        <div class="timeline-desc">Grid utilities added. Transition and animation utilities ship. Ring utilities arrive. Accessibility improvements throughout.</div>
+      </div>
+      <div class="timeline-item milestone">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v2.0 — November 2020</div>
+        <div class="timeline-desc">Dark mode support added. Extended color palette (220+ colors with all intermediate shades). Ring utilities for accessible focus rings. JIT compiler begins development behind the scenes.</div>
+      </div>
+      <div class="timeline-item milestone">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v3.0 — December 2021</div>
+        <div class="timeline-desc">
+          <strong>Game-changer:</strong> Just-In-Time (JIT) engine becomes the default. Arbitrary values with square brackets. Every color in the default palette. Play CDN for zero-setup prototyping. Build times drop from seconds to milliseconds.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v3.2 — October 2022</div>
+        <div class="timeline-desc">Container queries (<code>@container</code>) support arrives. CSS Cascade Layers (<code>@layer</code>) integration. <code>has-[]</code> variant for parent-state targeting.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v3.3–v3.4 — 2023</div>
+        <div class="timeline-desc">Extended P3 wide-gamut color support. <code>line-clamp</code> utilities promoted to core. Logical properties (<code>ms-</code>, <code>me-</code>, <code>ps-</code>, <code>pe-</code>). <code>text-balance</code> and <code>text-pretty</code> wrapping utilities.</div>
+      </div>
+      <div class="timeline-item milestone">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v4.0 — January 22, 2025</div>
+        <div class="timeline-desc">
+          <strong>Complete architecture rewrite.</strong> Engine rebuilt in <strong>Rust</strong> via Lightning CSS. PostCSS dependency removed for most users. Configuration moves from <code>tailwind.config.js</code> into CSS using <code>@theme</code>. Full builds <strong>5× faster</strong> than v3. All design tokens become CSS custom properties accessible as <code>var(--color-blue-500)</code> everywhere.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v4.1 — April 2025</div>
+        <div class="timeline-desc">Text shadow utilities finally arrive (a long-requested feature). Improved interactive experience utilities. <code>not-</code> variant for cleaner negation patterns.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v4.2 — February 18, 2026</div>
+        <div class="timeline-desc">First-class webpack plugin ships. Four new default color palettes. Expanded logical property utilities. Recompilation speed improved <strong>3.8×</strong> over v4.0.</div>
+      </div>
+      <div class="timeline-item milestone">
+        <div class="timeline-dot"></div>
+        <div class="timeline-version">v4.3.1 — June 12, 2026 (current)</div>
+        <div class="timeline-desc">First-party scrollbar styling utilities. New zoom and tab-size utilities. Better <code>@variant</code> support. This is the version you should be using today.</div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">v3 vs v4 — Architecture Shift</h3>
+    <div class="arch-compare">
+      <div class="arch-card old">
+        <div class="arch-card-header">⚡ Tailwind v3 — PostCSS Era</div>
+        <div class="arch-card-body">
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Config in <code>tailwind.config.js</code> (JavaScript)
+          </div>
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Runs as a PostCSS plugin (Node.js)
+          </div>
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Uses <code>@tailwind base/components/utilities</code> directives
+          </div>
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Design tokens NOT natively CSS variables
+          </div>
+        </div>
+      </div>
+      <div class="arch-card new">
+        <div class="arch-card-header">🚀 Tailwind v4 — CSS-Native Era</div>
+        <div class="arch-card-body">
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Config in CSS using <code>@theme</code> directive
+          </div>
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Rust-powered engine (Lightning CSS), 5× faster
+          </div>
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Single <code>@import "tailwindcss"</code> — zero directives
+          </div>
+          <div class="arch-card-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            All tokens are native CSS variables: <code>var(--color-blue-500)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Adoption</h3>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">93K+</div>
+        <div class="stat-label">GitHub Stars (Feb 2026)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">#1</div>
+        <div class="stat-label">Most-used CSS Framework (State of CSS 2024)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$4M+</div>
+        <div class="stat-label">Revenue in first 2 years (Tailwind UI)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">v4.3</div>
+        <div class="stat-label">Current stable — June 2026</div>
+      </div>
+    </div>
+  </section>
 
   <!-- ══════════════════════════════════════════════════════════
        01 · WHY TAILWIND
@@ -1615,11 +2124,126 @@ hr.divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; 
   </section>
 
   <!-- ══════════════════════════════════════════════════════════
-       03 · SETUP
+       03 · JIT ENGINE DEEP DIVE
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="jit-engine">
+    <div class="section-number">Chapter 03</div>
+    <div class="section-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    </div>
+    <h2 class="section-title">JIT Engine — Deep Dive</h2>
+    <p class="section-intro">The Just-In-Time engine is the most important technical innovation in Tailwind's history. Understanding how it works explains every "rule" you'll encounter — including why you can't use dynamic class names.</p>
+
+    <h3 class="sub-title">How the JIT Pipeline Works</h3>
+    <p>Every time you save a file, Tailwind's engine runs a 4-stage pipeline in milliseconds:</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <svg class="pipeline-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <div class="pipeline-step-title">1. Scan Files</div>
+        <div class="pipeline-step-desc">Reads every .html, .jsx, .tsx, .vue file matching your content config</div>
+      </div>
+      <div class="pipeline-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="pipeline-step">
+        <svg class="pipeline-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <div class="pipeline-step-title">2. Detect Classes</div>
+        <div class="pipeline-step-desc">Regex tokeniser extracts every candidate string that could be a Tailwind class</div>
+      </div>
+      <div class="pipeline-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="pipeline-step">
+        <svg class="pipeline-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <div class="pipeline-step-title">3. Generate CSS</div>
+        <div class="pipeline-step-desc">For each valid class found, generates the exact CSS rule on-demand</div>
+      </div>
+      <div class="pipeline-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="pipeline-step">
+        <svg class="pipeline-step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <div class="pipeline-step-title">4. Output Bundle</div>
+        <div class="pipeline-step-desc">Only the classes actually used — nothing more. 5–20KB typical output</div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">The #1 Rule — No Dynamic Class Names</h3>
+    <p>Because Tailwind <strong>scans source files as plain text</strong> (not executing JavaScript), it can only detect class names that exist as complete strings. The engine cannot know what a runtime expression will evaluate to.</p>
+
+    <div class="compare">
+      <div class="compare-box compare-old">
+        <div class="compare-header">❌ BROKEN — class name split across JS</div>
+<pre data-lang="JSX"><code><span class="comment">// Tailwind CANNOT detect this:</span>
+<span class="kw">const</span> color = <span class="str">'blue'</span>;
+<span class="tag">&lt;div</span> <span class="atr">className</span>=<span class="val">{`bg-${color}-500`}</span><span class="tag">&gt;</span>
+  Never gets the bg-blue-500 CSS
+<span class="tag">&lt;/div&gt;</span></code></pre>
+      </div>
+      <div class="compare-box compare-new">
+        <div class="compare-header">✅ CORRECT — complete class names only</div>
+<pre data-lang="JSX"><code><span class="comment">// Map complete strings — Tailwind CAN detect:</span>
+<span class="kw">const</span> colors = {
+  blue: <span class="str">'bg-blue-500'</span>,
+  red:  <span class="str">'bg-red-500'</span>,
+};
+<span class="tag">&lt;div</span> <span class="atr">className</span>=<span class="val">{colors[color]}</span><span class="tag">&gt;</span>
+  Works perfectly
+<span class="tag">&lt;/div&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>Safelist for truly dynamic classes:</strong> If you receive class names from a CMS, API, or user input that Tailwind can't scan, add them to your safelist in the config. They'll always be included in the output regardless of whether the scanner finds them.
+    </div>
+
+    <h3 class="sub-title">v4 Engine — Rust & Lightning CSS</h3>
+    <p>Tailwind v4 completely rewrote the engine in <strong>Rust</strong> via Lightning CSS, replacing the Node.js/PostCSS pipeline. This wasn't just about speed — it enabled new capabilities:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Capability</th><th>v3 (Node/PostCSS)</th><th>v4 (Rust/Lightning CSS)</th></tr></thead>
+        <tbody>
+          <tr><td>Full rebuild</td><td>~400ms (medium project)</td><td class="css-col">~80ms (5× faster)</td></tr>
+          <tr><td>Incremental rebuild</td><td>~100ms</td><td class="css-col">~4ms</td></tr>
+          <tr><td>Browser-native CSS features</td><td>PostCSS transforms required</td><td class="css-col">Native — no transforms</td></tr>
+          <tr><td>Color manipulation</td><td>JavaScript</td><td class="css-col">oklch native</td></tr>
+          <tr><td>CSS nesting</td><td>Plugin required</td><td class="css-col">Built-in</td></tr>
+          <tr><td>Design tokens</td><td>JS object → CSS vars</td><td class="css-col">CSS vars are the tokens</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Arbitrary Values — How the Scanner Handles Them</h3>
+    <p>When Tailwind sees <code>bg-[#1a2030]</code>, the JIT engine's tokeniser extracts the bracket content and generates a unique CSS class on-demand. This is why arbitrary values work without any configuration:</p>
+
+<pre data-lang="How JIT Handles Arbitrary Values"><code><span class="comment">/* What you write */</span>
+<span class="cls">.bg-\[#1a2030\]</span> {
+  <span class="kw">background-color</span>: <span class="str">#1a2030</span>;
+}
+
+<span class="comment">/* Arbitrary with calc */</span>
+<span class="cls">.top-\[calc\(100vh-4rem\)\]</span> {
+  <span class="kw">top</span>: <span class="str">calc(100vh - 4rem)</span>;
+}
+
+<span class="comment">/* Even CSS variables as values */</span>
+<span class="cls">.text-\[--brand-color\]</span> {
+  <span class="kw">color</span>: <span class="str">var(--brand-color)</span>;
+}</code></pre>
+
+    <div class="callout callout-tip">
+      <strong>v4 shorthand for CSS variables:</strong> In v4, you can write <code>text-(--brand-color)</code> instead of <code>text-[var(--brand-color)]</code>. Parentheses are the new shorthand for CSS variable values.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       04 · SETUP (renumbered)
   ══════════════════════════════════════════════════════════ -->
   <section class="section" id="setup">
-    <div class="section-number">Chapter 03</div>
-    <h2 class="section-title">Setup & Installation</h2>
+    <div class="section-number">Chapter 04</div>
+    <h2 class="section-title">Setup &amp; Installation</h2>
     <p class="section-intro">Three ways to use Tailwind — pick the one that fits your project.</p>
 
     <h3 class="sub-title">Option 1 — CDN (Play/Prototype, No Build Step)</h3>
@@ -3023,7 +3647,617 @@ npm install tailwindcss @tailwindcss/postcss postcss</code></pre>
   </section>
 
   <!-- ══════════════════════════════════════════════════════════
-       21 · PRO TIPS
+       20 · CONFIGURATION
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="config">
+    <div class="section-number">Chapter 20</div>
+    <div class="section-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+    </div>
+    <h2 class="section-title">Configuration — Design Tokens &amp; Customisation</h2>
+    <p class="section-intro">Tailwind's configuration is how you turn a generic utility framework into your product's design system. v3 and v4 take completely different approaches — both worth knowing.</p>
+
+    <h3 class="sub-title">v3 — tailwind.config.js</h3>
+    <p>In v3, all configuration lives in a JavaScript file at the root of your project. This gives you the full power of JS — loops, conditionals, imported values from other files.</p>
+
+<pre data-lang="tailwind.config.js (v3)"><code><span class="comment">/** @type {import('tailwindcss').Config} */</span>
+<span class="kw">module.exports</span> = {
+  <span class="comment">// Where to scan for class names</span>
+  content: [
+    <span class="str">'./src/**/*.{html,js,jsx,ts,tsx,vue}'</span>,
+    <span class="str">'./public/index.html'</span>,
+  ],
+
+  <span class="comment">// Dark mode strategy</span>
+  darkMode: <span class="str">'class'</span>, <span class="comment">// or 'media'</span>
+
+  theme: {
+    <span class="comment">// EXTEND — add to the defaults (recommended)</span>
+    extend: {
+      colors: {
+        brand: {
+          <span class="num">50</span>:  <span class="str">'#eff6ff'</span>,
+          <span class="num">500</span>: <span class="str">'#3b82f6'</span>,
+          <span class="num">900</span>: <span class="str">'#1e3a8a'</span>,
+        },
+        surface: <span class="str">'#0d1117'</span>,
+      },
+      fontFamily: {
+        display: [<span class="str">'Cabinet Grotesk'</span>, <span class="str">'sans-serif'</span>],
+      },
+      spacing: {
+        <span class="str">'18'</span>: <span class="str">'4.5rem'</span>,  <span class="comment">// 72px</span>
+        <span class="str">'128'</span>: <span class="str">'32rem'</span>, <span class="comment">// 512px</span>
+      },
+      borderRadius: {
+        <span class="str">'4xl'</span>: <span class="str">'2rem'</span>,
+      },
+      animation: {
+        <span class="str">'fade-in'</span>: <span class="str">'fadeIn 0.5s ease-in-out'</span>,
+      },
+      keyframes: {
+        fadeIn: {
+          <span class="str">'0%'</span>: { opacity: <span class="str">'0'</span> },
+          <span class="str">'100%'</span>: { opacity: <span class="str">'1'</span> },
+        },
+      },
+    },
+
+    <span class="comment">// REPLACE (no extend) — completely replaces defaults</span>
+    <span class="comment">// screens: { sm: '640px', md: '768px' }, ← replaces ALL breakpoints</span>
+  },
+
+  plugins: [
+    require(<span class="str">'@tailwindcss/typography'</span>),
+    require(<span class="str">'@tailwindcss/forms'</span>),
+  ],
+};</code></pre>
+
+    <div class="callout callout-warn">
+      <strong><code>extend</code> vs top-level:</strong> Adding under <code>theme.extend.colors</code> ADDS to the palette. Adding directly under <code>theme.colors</code> REPLACES the entire palette — you lose all the built-in colors. Always use <code>extend</code> unless you intentionally want to start from scratch.
+    </div>
+
+    <h3 class="sub-title">v4 — @theme in CSS</h3>
+    <p>In v4, configuration moves entirely into your CSS file. No JavaScript, no separate config file. Design tokens become CSS custom properties that are available everywhere — in Tailwind classes, in your own CSS, and in JavaScript via <code>getComputedStyle()</code>.</p>
+
+<pre data-lang="styles.css (v4)"><code><span class="cls">@import</span> <span class="str">"tailwindcss"</span>;
+
+<span class="cls">@theme</span> {
+  <span class="comment">/* Colors: prefix with --color- */</span>
+  <span class="kw">--color-brand-50</span>:  <span class="str">oklch(97% 0.02 250)</span>;
+  <span class="kw">--color-brand-500</span>: <span class="str">oklch(60% 0.18 250)</span>;
+  <span class="kw">--color-brand-900</span>: <span class="str">oklch(25% 0.12 250)</span>;
+  <span class="kw">--color-surface</span>:   <span class="str">#0d1117</span>;
+
+  <span class="comment">/* Fonts: prefix with --font- */</span>
+  <span class="kw">--font-display</span>: <span class="str">'Cabinet Grotesk', sans-serif</span>;
+
+  <span class="comment">/* Spacing: prefix with --spacing- */</span>
+  <span class="kw">--spacing-18</span>: <span class="str">4.5rem</span>;
+  <span class="kw">--spacing-128</span>: <span class="str">32rem</span>;
+
+  <span class="comment">/* Breakpoints: prefix with --breakpoint- */</span>
+  <span class="kw">--breakpoint-xs</span>: <span class="str">475px</span>;
+  <span class="kw">--breakpoint-3xl</span>: <span class="str">1920px</span>;
+
+  <span class="comment">/* Animations */</span>
+  <span class="kw">--animate-fade-in</span>: <span class="str">fadeIn 0.5s ease-in-out</span>;
+}
+
+<span class="cls">@keyframes fadeIn</span> {
+  <span class="str">from</span> { <span class="kw">opacity</span>: <span class="num">0</span>; }
+  <span class="str">to</span>   { <span class="kw">opacity</span>: <span class="num">1</span>; }
+}</code></pre>
+
+    <p>These tokens are now usable as native CSS variables anywhere — in Tailwind classes like <code>bg-brand-500</code>, in your CSS as <code>var(--color-brand-500)</code>, and even in JavaScript:</p>
+
+<pre data-lang="JS"><code><span class="comment">// Access design tokens in JavaScript (v4)</span>
+<span class="kw">const</span> brand = getComputedStyle(document.documentElement)
+  .getPropertyValue(<span class="str">'--color-brand-500'</span>)
+  .trim(); <span class="comment">// "oklch(60% 0.18 250)"</span></code></pre>
+
+    <h3 class="sub-title">The Safelist — Protecting Dynamic Classes</h3>
+
+<pre data-lang="tailwind.config.js (v3 safelist)"><code>module.exports = {
+  safelist: [
+    <span class="comment">// Always include these regardless of scanner</span>
+    <span class="str">'bg-red-500'</span>,
+    <span class="str">'text-white'</span>,
+
+    <span class="comment">// Pattern-based safelist (generates ALL matches)</span>
+    {
+      pattern: <span class="str">/bg-(red|green|blue)-(100|500|900)/</span>,
+      variants: [<span class="str">'hover'</span>, <span class="str">'dark'</span>],
+    },
+  ],
+};</code></pre>
+
+    <h3 class="sub-title">Content Paths — What Gets Scanned</h3>
+    <div class="callout callout-info">
+      <strong>v4 auto-detection:</strong> In v4, Tailwind automatically detects your source files by scanning <code>.gitignore</code> and project structure — no <code>content</code> array needed in most projects. But you can still configure explicit paths with <code>@source</code> in your CSS.
+    </div>
+
+<pre data-lang="CSS (v4 explicit source)"><code><span class="cls">@import</span> <span class="str">"tailwindcss"</span>;
+
+<span class="comment">/* Explicitly add paths */</span>
+<span class="cls">@source</span> <span class="str">"./src/**/*.{html,tsx}"</span>;
+<span class="cls">@source</span> <span class="str">"./node_modules/@my-ui-lib/components"</span>;
+
+<span class="comment">/* Safelist in v4 */</span>
+<span class="cls">@source</span> <span class="kw">inline</span>(<span class="str">"bg-red-500 bg-green-500 bg-blue-500"</span>);</code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       21 · PLUGINS & ECOSYSTEM
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="plugins">
+    <div class="section-number">Chapter 21</div>
+    <div class="section-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+    </div>
+    <h2 class="section-title">Plugins &amp; Ecosystem</h2>
+    <p class="section-intro">Tailwind's plugin system lets you extend the framework with new utilities, components, and base styles. The ecosystem has matured into a rich collection of official and community tools.</p>
+
+    <h3 class="sub-title">Official Plugins</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Plugin</th><th>What it adds</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="class-col">@tailwindcss/typography</td>
+            <td>The <code>prose</code> class — beautiful typographic defaults for HTML content</td>
+            <td>Blog posts, docs, markdown output</td>
+          </tr>
+          <tr>
+            <td class="class-col">@tailwindcss/forms</td>
+            <td>Sane default styles for form elements (inputs, selects, checkboxes)</td>
+            <td>Forms without fighting browser defaults</td>
+          </tr>
+          <tr>
+            <td class="class-col">@tailwindcss/aspect-ratio</td>
+            <td>Aspect ratio utilities (now built into core since v3.2)</td>
+            <td>Video embeds, image containers</td>
+          </tr>
+          <tr>
+            <td class="class-col">@tailwindcss/container-queries</td>
+            <td>Container query variants (<code>@lg:grid-cols-3</code>)</td>
+            <td>Components that respond to their container width</td>
+          </tr>
+          <tr>
+            <td class="class-col">@tailwindcss/line-clamp</td>
+            <td>Text truncation utilities (built into core since v3.3)</td>
+            <td>Card descriptions, excerpt truncation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">The <code>cn()</code> Pattern — The Essential Helper</h3>
+    <p>Every serious Tailwind project uses <code>cn()</code>. It solves a real problem: when you're conditionally applying classes, Tailwind classes can conflict and the later class doesn't always win. <code>cn()</code> merges classes intelligently.</p>
+
+    <p>Install two packages:</p>
+<pre data-lang="Terminal"><code>npm install clsx tailwind-merge</code></pre>
+
+    <p>Create the utility (one file, used everywhere):</p>
+<pre data-lang="lib/utils.ts"><code><span class="kw">import</span> { type ClassValue, clsx } <span class="kw">from</span> <span class="str">'clsx'</span>;
+<span class="kw">import</span> { twMerge } <span class="kw">from</span> <span class="str">'tailwind-merge'</span>;
+
+<span class="kw">export function</span> cn(...inputs: ClassValue[]) {
+  <span class="kw">return</span> twMerge(clsx(inputs));
+}
+
+<span class="comment">// clsx handles conditionals, arrays, objects
+// twMerge deduplicates conflicting Tailwind classes</span></code></pre>
+
+    <p>Why you need both:</p>
+<pre data-lang="TSX"><code><span class="comment">// Without cn() — conflict! Both p-2 and p-4 get applied.
+// Which one wins depends on stylesheet order, not your code.</span>
+<span class="tag">&lt;div</span> <span class="atr">className</span>=<span class="val">{`p-2 ${isLarge ? 'p-4' : ''}`</span>}<span class="tag">&gt;</span>
+
+<span class="comment">// WITH cn() — twMerge resolves the conflict. p-4 always wins:</span>
+<span class="tag">&lt;div</span> <span class="atr">className</span>=<span class="val">{cn('p-2', isLarge &amp;&amp; 'p-4')}</span><span class="tag">&gt;</span>
+
+<span class="comment">// Real-world button component:</span>
+<span class="kw">function</span> Button({ className, variant = <span class="str">'primary'</span>, ...props }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;button</span>
+      <span class="atr">className</span>=<span class="val">{cn(</span>
+        <span class="comment">// Base styles always present</span>
+        <span class="str">'inline-flex items-center justify-center rounded-lg font-semibold transition-all'</span>,
+        <span class="comment">// Variant-based styles</span>
+        {
+          <span class="str">'bg-blue-500 text-white hover:bg-blue-600'</span>: variant === <span class="str">'primary'</span>,
+          <span class="str">'border border-gray-300 hover:bg-gray-50'</span>:   variant === <span class="str">'outline'</span>,
+          <span class="str">'text-blue-500 underline-offset-4 hover:underline'</span>: variant === <span class="str">'link'</span>,
+        },
+        <span class="comment">// Allow external className overrides</span>
+        className
+      )}<span class="val">}</span>
+      {...props}
+    <span class="tag">/&gt;</span>
+  );
+}</code></pre>
+
+    <div class="callout callout-key">
+      <strong>cn() is everywhere in AI-generated code.</strong> If you see <code>cn()</code> in code from ChatGPT, Copilot, or v0.dev, this is what it is. Install <code>clsx</code> + <code>tailwind-merge</code> and create this file. It's the standard pattern across the entire React + Tailwind ecosystem.
+    </div>
+
+    <h3 class="sub-title">Component Libraries Built on Tailwind</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Library</th><th>Approach</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td class="class-col">shadcn/ui</td><td>Copy-paste components into your repo. You own the code.</td><td>Full control + customisation</td></tr>
+          <tr><td class="class-col">Tailwind UI</td><td>Paid premium component library from the Tailwind team</td><td>Production apps, saves time</td></tr>
+          <tr><td class="class-col">Headless UI</td><td>Unstyled, accessible components. You add Tailwind classes.</td><td>Accessible dropdowns, dialogs, tabs</td></tr>
+          <tr><td class="class-col">DaisyUI</td><td>Component classes on top of Tailwind (<code>btn btn-primary</code>)</td><td>Quick prototypes</td></tr>
+          <tr><td class="class-col">Flowbite</td><td>Open-source Tailwind components with JS interactions</td><td>Beginners, rapid builds</td></tr>
+          <tr><td class="class-col">Radix UI + Tailwind</td><td>Accessible primitives + Tailwind styling (basis of shadcn)</td><td>Production-grade accessibility</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Writing Your Own Plugin (v3)</h3>
+<pre data-lang="tailwind.config.js"><code><span class="kw">const</span> plugin = require(<span class="str">'tailwindcss/plugin'</span>);
+
+module.exports = {
+  plugins: [
+    plugin(<span class="kw">function</span>({ addUtilities, addComponents, theme }) {
+      <span class="comment">// Add custom utilities</span>
+      addUtilities({
+        <span class="str">'.flex-center'</span>: {
+          display: <span class="str">'flex'</span>,
+          alignItems: <span class="str">'center'</span>,
+          justifyContent: <span class="str">'center'</span>,
+        },
+        <span class="str">'.text-balance'</span>: {
+          textWrap: <span class="str">'balance'</span>,
+        },
+      });
+
+      <span class="comment">// Add custom components</span>
+      addComponents({
+        <span class="str">'.card'</span>: {
+          backgroundColor: theme(<span class="str">'colors.white'</span>),
+          borderRadius: theme(<span class="str">'borderRadius.xl'</span>),
+          padding: theme(<span class="str">'spacing.6'</span>),
+          boxShadow: theme(<span class="str">'boxShadow.md'</span>),
+        },
+      });
+    }),
+  ],
+};</code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       24 · PERFORMANCE & PRODUCTION
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="performance">
+    <div class="section-number">Chapter 24</div>
+    <div class="section-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </div>
+    <h2 class="section-title">Performance &amp; Production</h2>
+    <p class="section-intro">One of Tailwind's biggest selling points is tiny production CSS bundles. Here's exactly what that means, how it works, and what best practices keep your output fast.</p>
+
+    <h3 class="sub-title">Bundle Size in Practice</h3>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">~5KB</div>
+        <div class="stat-label">Typical Tailwind production CSS (gzipped)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">~30KB</div>
+        <div class="stat-label">Bootstrap 5 (minified + gzipped)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">~200KB</div>
+        <div class="stat-label">Bootstrap 5 (raw, no minification)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">&lt;10KB</div>
+        <div class="stat-label">Large production app with 50+ components</div>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <strong>Why is Tailwind CSS so small?</strong> Because the same utility class is reused across every element that needs it. <code>flex</code> generates one CSS rule — <code>display: flex</code> — and it applies everywhere <code>flex</code> appears. Traditional CSS generates a new rule for every selector. The more components you build, the bigger traditional CSS gets. Tailwind's size barely grows after the first 20 components.
+    </div>
+
+    <h3 class="sub-title">Production Checklist</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Checklist Item</th><th>v3</th><th>v4</th></tr></thead>
+        <tbody>
+          <tr><td>Unused CSS removal</td><td>JIT engine (automatic)</td><td class="css-col">JIT engine (automatic)</td></tr>
+          <tr><td>CSS minification</td><td>Add <code>cssnano</code> to PostCSS</td><td class="css-col">Built into Lightning CSS</td></tr>
+          <tr><td>Source maps</td><td>Configure in PostCSS</td><td class="css-col">Built-in, opt-in via config</td></tr>
+          <tr><td>Dynamic class safety</td><td>Safelist in config</td><td class="css-col"><code>@source inline()</code> in CSS</td></tr>
+          <tr><td>Content scanning</td><td>Explicit <code>content</code> array</td><td class="css-col">Auto-detected, or <code>@source</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">CSS-in-JS vs Tailwind Performance</h3>
+    <p>A critical difference that matters at scale: CSS-in-JS libraries (styled-components, Emotion) generate styles at runtime in JavaScript. Tailwind generates static CSS at build time. This means:</p>
+
+    <div class="arch-compare">
+      <div class="arch-card old">
+        <div class="arch-card-header">CSS-in-JS (Runtime)</div>
+        <div class="arch-card-body">
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Styles injected via JavaScript at runtime</div>
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>JS bundle size increases with every component</div>
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>React Server Components incompatible</div>
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Flash of unstyled content risk</div>
+        </div>
+      </div>
+      <div class="arch-card new">
+        <div class="arch-card-header">Tailwind (Build-time)</div>
+        <div class="arch-card-body">
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Static CSS file — zero JS runtime cost</div>
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>CSS size barely grows after ~20 components</div>
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Works perfectly with RSC, SSR, SSG</div>
+          <div class="arch-card-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Styles loaded before JS — no flash</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">Build Speed</h3>
+<pre data-lang="Terminal output comparison"><code><span class="comment"># Tailwind v3 (medium project, ~30 components)</span>
+$ npm run build
+  Generating optimized CSS...
+  Done in 380ms ✓
+
+<span class="comment"># Tailwind v4 (same project)</span>
+$ npm run build
+  Generating optimized CSS...
+  Done in 72ms ✓  ← 5× faster
+
+<span class="comment"># Tailwind v4 incremental (only changed files)</span>
+  Rebuilt in 4ms ✓  ← near-instant HMR</code></pre>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       25 · TAILWIND IN THE AI ERA
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="ai-era">
+    <div class="section-number">Chapter 25</div>
+    <div class="section-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8v4l2 2"/><path d="M18 2l4 4-4 4"/><path d="M22 6h-6"/></svg>
+    </div>
+    <div class="ai-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      AI Era Chapter
+    </div>
+    <h2 class="section-title">Tailwind in the AI Era</h2>
+    <p class="section-intro">AI coding tools have made Tailwind the de-facto standard for generating UI code. Understanding <em>why</em> this happened — and how to work with it effectively — is a critical modern skill.</p>
+
+    <h3 class="sub-title">Why AI Always Reaches for Tailwind</h3>
+    <p>When you ask ChatGPT, Claude, Copilot, or Cursor to build UI, they almost always output Tailwind. This isn't a coincidence:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Reason</th><th>What it means</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Self-documenting classes</strong></td>
+            <td><code>text-red-500 font-bold mt-4</code> is readable as-is. LLMs don't need to "remember" that <code>.header-title</code> means bold red text.</td>
+          </tr>
+          <tr>
+            <td><strong>No naming decisions</strong></td>
+            <td>AI doesn't need to invent class names. Tailwind's naming system is deterministic — the AI knows exactly what class expresses any CSS property.</td>
+          </tr>
+          <tr>
+            <td><strong>Massive training data</strong></td>
+            <td>Millions of GitHub repos, tutorials, and documentation using Tailwind were in the training data. It's the most-represented styling system in the corpus.</td>
+          </tr>
+          <tr>
+            <td><strong>Inline = no context switching</strong></td>
+            <td>AI can produce a complete UI component in one file without needing to generate separate CSS that references element structure.</td>
+          </tr>
+          <tr>
+            <td><strong>Used by AI tools themselves</strong></td>
+            <td>v0.dev (Vercel's AI UI builder), bolt.new, and Lovable all output Tailwind by default. The tooling loop reinforces the pattern.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">Reading AI-Generated Tailwind</h3>
+    <p>When AI generates code with long class strings, you need to read them systematically — left to right, group by group:</p>
+
+<pre data-lang="AI-generated component (annotated)"><code><span class="comment">{/* A card generated by Claude/GPT — how to read it: */}</span>
+<span class="tag">&lt;div</span> <span class="atr">className</span>=<span class="val">"</span>
+  <span class="comment">/* LAYOUT */</span>
+  <span class="str">flex flex-col gap-4</span>
+
+  <span class="comment">/* SIZING */</span>
+  <span class="str">w-full max-w-sm</span>
+
+  <span class="comment">/* SPACING */</span>
+  <span class="str">p-6</span>
+
+  <span class="comment">/* APPEARANCE */</span>
+  <span class="str">bg-white dark:bg-slate-800</span>
+  <span class="str">border border-slate-200 dark:border-slate-700</span>
+  <span class="str">rounded-2xl shadow-md</span>
+
+  <span class="comment">/* INTERACTION */</span>
+  <span class="str">hover:shadow-lg hover:-translate-y-0.5</span>
+  <span class="str">transition-all duration-200</span>
+<span class="val">"</span><span class="tag">&gt;</span></code></pre>
+
+    <h3 class="sub-title">Prompting AI for Better Tailwind Output</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Weak Prompt</th><th>✅ Strong Prompt</th></tr></thead>
+        <tbody>
+          <tr><td>"Make a card component"</td><td>"Make a card component using Tailwind v4. Use <code>cn()</code> for className merging. Dark mode with <code>dark:</code> prefix. No custom CSS."</td></tr>
+          <tr><td>"Style this button"</td><td>"Style this button with Tailwind. Variants: primary (blue), ghost (transparent), destructive (red). Use <code>cva</code> for variant management."</td></tr>
+          <tr><td>"Add hover effects"</td><td>"Add hover, focus, and active states using Tailwind modifiers. Include <code>transition-all duration-200</code> for smooth animations."</td></tr>
+          <tr><td>"Make it responsive"</td>
+            <td>"Make it responsive with mobile-first: single column → <code>md:grid-cols-2</code> → <code>lg:grid-cols-3</code>."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">The Engineer's Role — AI Can't Replace This</h3>
+    <p>AI writes Tailwind code quickly. But an engineer who understands Tailwind deeply brings something AI cannot:</p>
+
+    <div class="mistake-list">
+      <div class="mistake-item" style="border-left-color: var(--accent2);">
+        <div class="mistake-num" style="color:var(--accent2);">1</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Architecture decisions</div>
+          <div style="font-size:13px;color:var(--text2);">When to use <code>@layer components</code> vs a React component vs inline classes. AI defaults to inline — knowing when to extract is engineering judgment.</div>
+        </div>
+      </div>
+      <div class="mistake-item" style="border-left-color: var(--accent2);">
+        <div class="mistake-num" style="color:var(--accent2);">2</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Performance awareness</div>
+          <div style="font-size:13px;color:var(--text2);">AI may generate class strings that cause unnecessary re-renders in React (new string reference = new prop = re-render). Understanding this means using <code>cn()</code> with stable references.</div>
+        </div>
+      </div>
+      <div class="mistake-item" style="border-left-color: var(--accent2);">
+        <div class="mistake-num" style="color:var(--accent2);">3</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Design system discipline</div>
+          <div style="font-size:13px;color:var(--text2);">AI uses whatever colors/spacing values seem reasonable. A real engineer enforces design tokens — <code>bg-brand-500</code> not <code>bg-[#3b82f6]</code> scattered everywhere.</div>
+        </div>
+      </div>
+      <div class="mistake-item" style="border-left-color: var(--accent2);">
+        <div class="mistake-num" style="color:var(--accent2);">4</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Accessibility</div>
+          <div style="font-size:13px;color:var(--text2);">AI often generates visually-correct but semantically-wrong HTML. Understanding <code>focus-visible:</code> vs <code>focus:</code>, <code>sr-only</code>, and <code>aria-*</code> is still human work.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-key">
+      <strong>The skill gap has shifted:</strong> The question is no longer "can you write Tailwind?" (AI can). The question is "do you understand it well enough to review, debug, architect, and extend AI-generated Tailwind at scale?" That's what this guide trains.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       26 · COMMON MISTAKES & MENTAL MODELS
+  ══════════════════════════════════════════════════════════ -->
+  <section class="section" id="mistakes">
+    <div class="section-number">Chapter 26</div>
+    <div class="section-icon-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h2 class="section-title">Common Mistakes &amp; Mental Models</h2>
+    <p class="section-intro">Most Tailwind frustration comes from a small set of repeated mistakes and incorrect mental models. Fixing these unlocks everything else.</p>
+
+    <h3 class="sub-title">Top 10 Mistakes</h3>
+    <div class="mistake-list">
+      <div class="mistake-item">
+        <div class="mistake-num">01</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Using <code>sm:</code> for mobile styles</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);">Everyone does this. <code>sm:</code> means "640px and above", not "small screens". Mobile-first means the unprefixed class IS the mobile style.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Write mobile styles without prefix. Add <code>sm:</code> / <code>md:</code> to override for larger screens.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">02</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Building class names dynamically</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);"><code>bg-${color}-500</code> will never work. Tailwind scans static text — the full class string must exist literally.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Map complete strings: <code>const map = &#123; red: 'bg-red-500', blue: 'bg-blue-500' &#125;</code></div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">03</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Replacing entire theme keys instead of extending</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);">Putting custom colors in <code>theme.colors</code> (not <code>theme.extend.colors</code>) deletes all built-in colors.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Always use <code>theme.extend.*</code> unless you explicitly want to replace all defaults.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">04</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Overusing <code>@apply</code></div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);"><code>@apply</code> recreates the problems Tailwind solves — you're back to managing class names and specificity conflicts.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Use components (React/Vue components) to reuse styles, not <code>@apply</code>. Reserve <code>@apply</code> for external HTML you can't touch.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">05</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Forgetting <code>dark:</code> variants in new components</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);">Adding a new <code>bg-white text-black</code> card without dark variants breaks dark mode for that component.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Develop the habit: every light color gets a dark counterpart. <code>bg-white dark:bg-gray-800</code>.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">06</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Using pixel values in arbitrary brackets instead of the scale</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);"><code>mt-[16px]</code> when <code>mt-4</code> exists. Arbitrary values bypass the design system and create inconsistency.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Always check if the scale has what you need first. Use arbitrary values for genuinely unique one-offs only.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">07</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Not using <code>gap</code> with flex/grid — using margins instead</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);"><code>gap-4</code> on the flex/grid container is always cleaner than adding <code>mr-4</code> to each child.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Reach for <code>gap-*</code> first on any flex or grid container.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">08</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Missing <code>overflow-hidden</code> on rounded containers</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);">A <code>rounded-xl</code> card with an image inside — the image corners poke out. Classic gotcha.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Pair <code>rounded-xl overflow-hidden</code> on any container that clips children.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">09</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Forgetting <code>min-w-0</code> in flex children</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);">Flex items have <code>min-width: auto</code> by default — they refuse to shrink below their content width. Causes overflow bugs with long text.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Add <code>min-w-0</code> to any flex child that should be allowed to shrink and truncate text.</div>
+        </div>
+      </div>
+      <div class="mistake-item">
+        <div class="mistake-num">10</div>
+        <div class="mistake-body">
+          <div class="mistake-title">Treating Tailwind like Bootstrap</div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text2);">Looking for <code>.card</code>, <code>.navbar</code>, <code>.btn</code> component classes that don't exist. Tailwind is a utility toolkit, not a component library.</p>
+          <div class="mistake-fix"><strong>Fix:</strong> Build your own components, or use shadcn/ui/Tailwind UI on top. Tailwind gives you the ingredients, not the dish.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub-title">The Key Mental Model Shifts</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Traditional CSS Thinking</th><th>Tailwind Thinking</th></tr></thead>
+        <tbody>
+          <tr><td>"I'll create a <code>.card</code> class for this"</td><td>"I'll compose utilities directly. If I need to reuse, I'll make a component."</td></tr>
+          <tr><td>"This class name is too long"</td><td>"The class name IS the documentation. Verbosity is a feature."</td></tr>
+          <tr><td>"I need to write separate responsive CSS"</td><td>"Every utility has a responsive prefix built in — <code>md:grid-cols-2</code>"</td></tr>
+          <tr><td>"Dark mode needs a separate stylesheet"</td><td>"Every utility has a dark prefix — <code>dark:bg-gray-800</code>"</td></tr>
+          <tr><td>"I worry about CSS specificity conflicts"</td><td>"One class = one rule. No specificity wars possible."</td></tr>
+          <tr><td>"I need to name things consistently"</td><td>"Names are pre-decided by Tailwind's API. No naming decisions."</td></tr>
+          <tr><td>"The CSS file is getting big"</td><td>"There is no CSS file to maintain."</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-key">
+      <strong>Adam Wathan on the "mess" objection:</strong> "I've had people show me their 'messy' Tailwind HTML. Every single time, it's cleaner than the CSS it would have replaced. The mess isn't in the HTML — it's in trying to maintain a traditional CSS codebase at scale."
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════
+       27 · PRO TIPS (existing, renumbered)
   ══════════════════════════════════════════════════════════ -->
   <section class="section" id="tips">
     <div class="section-number">Chapter 21</div>
@@ -3321,30 +4555,40 @@ npm install tailwindcss @tailwindcss/postcss postcss</code></pre>
 (function() {
 'use strict';
 
-/* ── CHAPTER DATA ─────────────────────────────────────────── */
+/* ── Initialize Lucide icons ─────────────────────────────── */
+if (window.lucide) lucide.createIcons();
+
+/* ── CHAPTER DATA (29 chapters) ──────────────────────────── */
 const CHAPTERS = [
-  { id:'why',           title:'Why Tailwind?',                num:'01' },
-  { id:'how',           title:'How It Works',                 num:'02' },
-  { id:'setup',         title:'Setup & Installation',         num:'03' },
-  { id:'reset',         title:'The Base Reset',               num:'04' },
-  { id:'spacing-system',title:'The Spacing System',           num:'05' },
-  { id:'typography',    title:'Typography',                   num:'06' },
-  { id:'colors',        title:'Colors',                       num:'07' },
-  { id:'backgrounds',   title:'Backgrounds & Borders',        num:'08' },
-  { id:'sizing',        title:'Sizing',                       num:'09' },
-  { id:'spacing',       title:'Spacing — Margin & Padding',   num:'10' },
-  { id:'display',       title:'Display & Position',           num:'11' },
-  { id:'flexbox',       title:'Flexbox',                      num:'12' },
-  { id:'grid',          title:'CSS Grid',                     num:'13' },
-  { id:'responsive',    title:'Responsive Design',            num:'14' },
-  { id:'states',        title:'States (hover, focus…)',       num:'15' },
-  { id:'darkmode',      title:'Dark Mode',                    num:'16' },
-  { id:'arbitrary',     title:'Arbitrary Values',             num:'17' },
-  { id:'custom',        title:'Custom Styles',                num:'18' },
-  { id:'pseudo',        title:'Pseudo-elements',              num:'19' },
-  { id:'transitions',   title:'Transitions & Animations',     num:'20' },
-  { id:'tips',          title:'Pro Tips',                     num:'21' },
-  { id:'cheatsheet',    title:'Quick Reference Cheatsheet',   num:'22' },
+  { id:'history',       title:'History & Evolution',              num:'00' },
+  { id:'why',           title:'Why Tailwind?',                    num:'01' },
+  { id:'how',           title:'How It Works',                     num:'02' },
+  { id:'jit-engine',    title:'JIT Engine Deep Dive',             num:'03' },
+  { id:'setup',         title:'Setup & Installation',             num:'04' },
+  { id:'reset',         title:'The Base Reset',                   num:'05' },
+  { id:'spacing-system',title:'The Spacing System',               num:'06' },
+  { id:'typography',    title:'Typography',                       num:'07' },
+  { id:'colors',        title:'Colors',                           num:'08' },
+  { id:'backgrounds',   title:'Backgrounds & Borders',            num:'09' },
+  { id:'sizing',        title:'Sizing',                           num:'10' },
+  { id:'spacing',       title:'Spacing — Margin & Padding',       num:'11' },
+  { id:'display',       title:'Display & Position',               num:'12' },
+  { id:'flexbox',       title:'Flexbox',                          num:'13' },
+  { id:'grid',          title:'CSS Grid',                         num:'14' },
+  { id:'responsive',    title:'Responsive Design',                num:'15' },
+  { id:'states',        title:'States (hover, focus…)',           num:'16' },
+  { id:'darkmode',      title:'Dark Mode',                        num:'17' },
+  { id:'arbitrary',     title:'Arbitrary Values',                 num:'18' },
+  { id:'custom',        title:'Custom Styles',                    num:'19' },
+  { id:'config',        title:'Configuration',                    num:'20' },
+  { id:'plugins',       title:'Plugins & Ecosystem',              num:'21' },
+  { id:'pseudo',        title:'Pseudo-elements',                  num:'22' },
+  { id:'transitions',   title:'Transitions & Animations',         num:'23' },
+  { id:'performance',   title:'Performance & Production',         num:'24' },
+  { id:'ai-era',        title:'Tailwind in the AI Era',           num:'25' },
+  { id:'mistakes',      title:'Mistakes & Mental Models',         num:'26' },
+  { id:'tips',          title:'Pro Tips & Patterns',              num:'27' },
+  { id:'cheatsheet',    title:'Quick Reference Cheatsheet',       num:'28' },
 ];
 
 /* ── ELEMENTS ─────────────────────────────────────────────── */
